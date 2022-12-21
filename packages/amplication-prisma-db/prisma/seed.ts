@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./generated-prisma-client";
 import * as dotenv from "dotenv";
 
 const prisma = new PrismaClient();
