@@ -48,7 +48,7 @@ export async function createTopicsEnumInternal(
       }
       astEnum.createMember(pascalCase(topic.topicName), topic.topicName);
     });
-    return builders.exportDeclaration(false, astEnum.ast);
+    return builders.exportDeclaration(false, astEnum.ast as any);
   });
   astFile.program.body.push(...topics);
   const path = join(serverDirectories.messageBrokerDirectory, TOPIC_NAME);
