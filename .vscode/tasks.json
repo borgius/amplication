@@ -3,66 +3,37 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "bootstrap",
-      "problemMatcher": [],
-      "label": "Install",
-      "detail": "lerna bootstrap"
-    },
-    {
-      "type": "npm",
-      "script": "start",
-      "path": "packages/amplication-client/",
-      "problemMatcher": [],
-      "label": "Client Start",
-      "detail": "react-scripts start"
-    },
-    {
-      "type": "npm",
-      "script": "start",
-      "path": "packages/amplication-server/",
-      "problemMatcher": [],
-      "label": "Server Start",
-      "detail": "nest start"
-    },
-    {
-      "type": "npm",
-      "script": "docker:db",
-      "path": "packages/amplication-server/",
-      "problemMatcher": [],
-      "label": "Database Start",
-      "detail": "docker-compose -f docker-compose.yml up -d"
-    },
-    {
-      "label": "Start",
-      "dependsOn": ["Server Start", "Client Start", "Database Start"],
+      "script": "docker:dev",
+      "label": "Docker",
       "problemMatcher": []
     },
     {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-data/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-data",
-      "detail": "run-s build:generate-types build:compile"
+      "label": "Start",
+      "dependsOn": ["Server", "Client", "Storage-gateway", "Build-manager"],
+      "problemMatcher": []
     },
     {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-deployer/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-deployer",
-      "detail": "run-s build:compile build:copy-files"
+      "label": "Server",
+      "type": "shell",
+      "command": "nx serve amplication-server",
+      "detail": "Inspect:9229"
     },
     {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-data-service-generator/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-data-service-generator",
-      "detail": "run-s build:compile build:copy-files"
+      "label": "Client",
+      "type": "shell",
+      "command": "nx serve amplication-client"
+    },
+    {
+      "label": "Storage-gateway",
+      "type": "shell",
+      "command": "nx serve amplication-storage-gateway",
+      "detail": "Inspect:9129"
+    },
+    {
+      "label": "Build-manager",
+      "type": "shell",
+      "command": "nx serve amplication-build-manager",
+      "detail": "Inspect:9329"
     },
     {
       "type": "npm",
@@ -80,50 +51,6 @@
       "group": "build",
       "label": "npm: build - packages/amplication-container-builder",
       "detail": "tsc"
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-server/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-server",
-      "detail": "nest build"
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-client/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-client",
-      "detail": "react-scripts build"
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-design-system/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-design-system",
-      "detail": "rollup -c"
-    },
-    {
-      "type": "npm",
-      "script": "storybook",
-      "path": "packages/amplication-design-system/",
-      "problemMatcher": [],
-      "label": "npm: storybook - packages/amplication-design-system",
-      "detail": "start-storybook"
-    },
-    {
-      "type": "npm",
-      "script": "build-storybook",
-      "path": "packages/amplication-design-system/",
-      "problemMatcher": [],
-      "group": "build",
-      "label": "npm: build-storybook - packages/amplication-design-system",
-      "detail": "build-storybook"
     },
     {
       "type": "npm",

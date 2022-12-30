@@ -41,6 +41,7 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
+        "port": 9129,
         "buildTarget": "amplication-storage-gateway:build"
       },
       "configurations": {
