@@ -10,9 +10,7 @@ export async function createTokenService(
 ): Promise<Module> {
   const name =
     authProvider === EnumAuthProviderType.Http ? "Basic" : authProvider;
-  const templatePath = require.resolve(
-    `./${name.toLowerCase()}Token.service.template.ts`
-  );
+  const templatePath = `${__dirname}/${name.toLowerCase()}Token.service.template.ts`;
   const file = await readFile(templatePath);
   const filePath = `${authDir}/base/token.service.base.ts`;
 

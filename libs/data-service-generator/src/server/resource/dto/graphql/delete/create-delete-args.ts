@@ -7,7 +7,7 @@ import {
   getClassDeclarationById,
 } from "../../../../../util/ast";
 
-const templatePath = require.resolve("./delete-args.template.ts");
+const templatePath = `${__dirname}/delete-args.template.ts`;
 
 export async function createDeleteArgs(
   entity: Entity,

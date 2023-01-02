@@ -47,7 +47,11 @@
         "tsConfig": "libs/data-service-generator/tsconfig.lib.json",
         "packageJson": "libs/data-service-generator/package.json",
         "main": "libs/data-service-generator/src/index.ts",
-        "assets": ["libs/data-service-generator/*.md"]
+        "assets": [
+          "libs/data-service-generator/*.md",
+          "libs/data-service-generator/**/**.template.*",
+          "libs/data-service-generator/**/static/**/**"
+        ]
       }
     },
     "postbuild": {

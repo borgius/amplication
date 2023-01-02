@@ -7,7 +7,7 @@ import {
   getClassDeclarationById,
 } from "../../../../../util/ast";
 
-const templatePath = require.resolve("./find-many-args.template.ts");
+const templatePath = `${__dirname}/find-many-args.template.ts`;
 
 export async function createFindManyArgs(
   entity: Entity,

@@ -52,11 +52,9 @@ export type MethodsIdsActionEntityTriplet = {
 const TO_MANY_MIXIN_ID = builders.identifier("Mixin");
 export const DATA_ID = builders.identifier("data");
 
-const controllerTemplatePath = require.resolve("./controller.template.ts");
-const controllerBaseTemplatePath = require.resolve(
-  "./controller.base.template.ts"
-);
-const toManyTemplatePath = require.resolve("./to-many.template.ts");
+const controllerTemplatePath = `${__dirname}/controller.template.ts`;
+const controllerBaseTemplatePath = `${__dirname}/controller.base.template.ts`;
+const toManyTemplatePath = `${__dirname}/to-many.template.ts`;
 
 export async function createControllerModules(
   resource: string,

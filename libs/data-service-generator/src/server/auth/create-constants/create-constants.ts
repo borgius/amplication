@@ -7,7 +7,7 @@ import { builders } from "ast-types";
 import { print } from "@amplication/code-gen-utils";
 import { getEntityIdType } from "../../../util/get-entity-id-type";
 
-const templatePath = require.resolve("./create-constants.template.ts");
+const templatePath = `${__dirname}/create-constants.template.ts`;
 
 export async function createAuthConstants(): Promise<Module> {
   const { serverDirectories, userEntityName } = DsgContext.getInstance;

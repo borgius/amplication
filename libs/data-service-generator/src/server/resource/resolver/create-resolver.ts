@@ -51,10 +51,10 @@ import DsgContext from "../../../dsg-context";
 
 const MIXIN_ID = builders.identifier("Mixin");
 const DATA_MEMBER_EXPRESSION = memberExpression`args.data`;
-const resolverTemplatePath = require.resolve("./resolver.template.ts");
-const resolverTemplateBasePath = require.resolve("./resolver.base.template.ts");
-const toOneTemplatePath = require.resolve("./to-one.template.ts");
-const toManyTemplatePath = require.resolve("./to-many.template.ts");
+const resolverTemplatePath = `${__dirname}/resolver.template.ts`;
+const resolverTemplateBasePath = `${__dirname}/resolver.base.template.ts`;
+const toOneTemplatePath = `${__dirname}/to-one.template.ts`;
+const toManyTemplatePath = `${__dirname}/to-many.template.ts`;
 
 export async function createResolverModules(
   entityName: string,

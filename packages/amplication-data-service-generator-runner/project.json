@@ -58,6 +58,23 @@
       },
       "dependsOn": ["generate-example-input-json"]
     },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "amplication-data-service-generator-runner:build",
+        "buildTargetOptions": {
+          "main": "packages/amplication-data-service-generator-runner/src/server.ts"
+        },
+        "inspect": true,
+        "port": 9429
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "amplication-data-service-generator-runner:build:production"
+        }
+      }
+    },
+
     "docker:build": {
       "executor": "@nx-tools/nx-docker:build",
       "options": {

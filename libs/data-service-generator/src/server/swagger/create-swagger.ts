@@ -16,7 +16,7 @@ import { readFile } from "@amplication/code-gen-utils";
 import DsgContext from "../../dsg-context";
 import pluginWrapper from "../../plugin-wrapper";
 
-const swaggerTemplatePath = require.resolve("./swagger.template.ts");
+const swaggerTemplatePath = `${__dirname}/swagger.template.ts`;
 
 export const INSTRUCTIONS_BUFFER = "\n\n";
 

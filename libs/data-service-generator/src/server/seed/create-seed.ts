@@ -32,7 +32,7 @@ type SeedProperties = {
   userRolesFieldName: string;
 };
 
-const seedTemplatePath = require.resolve("./seed.template.ts");
+const seedTemplatePath = `${__dirname}/seed.template.ts`;
 
 const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "admin";

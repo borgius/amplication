@@ -50,11 +50,11 @@ const HASH_MEMBER_EXPRESSION = memberExpression`this.${PASSWORD_SERVICE_MEMBER_I
 const TRANSFORM_STRING_FIELD_UPDATE_INPUT_ID = builders.identifier(
   "transformStringFieldUpdateInput"
 );
-const serviceTemplatePath = require.resolve("./service.template.ts");
-const serviceBaseTemplatePath = require.resolve("./service.base.template.ts");
+const serviceTemplatePath = `${__dirname}/service.template.ts`;
+const serviceBaseTemplatePath = `${__dirname}/service.base.template.ts`;
 const PASSWORD_FIELD_ASYNC_METHODS = new Set(["create", "update"]);
-const toOneTemplatePath = require.resolve("./to-one.template.ts");
-const toManyTemplatePath = require.resolve("./to-many.template.ts");
+const toOneTemplatePath = `${__dirname}/to-one.template.ts`;
+const toManyTemplatePath = `${__dirname}/to-many.template.ts`;
 
 export async function createServiceModules(
   entityName: string,

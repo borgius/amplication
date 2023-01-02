@@ -25,7 +25,7 @@ import {
   SORT_ORDER_ASC_LITERAL,
 } from "../../sort-order.util";
 
-const templatePath = require.resolve("./order-by-input.template.ts");
+const templatePath = `${__dirname}/order-by-input.template.ts`;
 
 export async function createOrderByInput(
   entity: Entity

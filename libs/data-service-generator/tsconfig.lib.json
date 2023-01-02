@@ -16,5 +16,6 @@
     "**/static/**/**",
     "**/*.spec.ts",
     "**/*.spec.tsx"
-  ]
+  ],
+  "assets": ["**/**.template.*", "**/static/**/**"]
 }

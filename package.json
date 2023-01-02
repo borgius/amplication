@@ -22,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "@amplication/plugin-db-postgres": "^1.1.7",
     "@amplication/react-compound-timer": "^2.1.0",
     "@amplication/react-diff-viewer-continued": "^3.4.3",
     "@apollo/client": "^3.7.1",
@@ -136,6 +137,7 @@
     "recast": "^0.22.0",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
+    "replace-ext": "^2.0.0",
     "rimraf": "^3.0.2",
     "rooks": "^7.4.2",
     "rxjs": "^7.5.7",

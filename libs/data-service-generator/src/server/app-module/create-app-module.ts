@@ -21,7 +21,7 @@ import {
 import DsgContext from "../../dsg-context";
 import pluginWrapper from "../../plugin-wrapper";
 
-const appModuleTemplatePath = require.resolve("./app.module.template.ts");
+const appModuleTemplatePath = `${__dirname}/app.module.template.ts`;
 const MODULE_PATTERN = /\.module\.ts$/;
 const PRISMA_MODULE_ID = builders.identifier("PrismaModule");
 const MORGAN_MODULE_ID = builders.identifier("MorganModule");

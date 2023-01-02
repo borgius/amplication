@@ -7,9 +7,7 @@ import {
   removeTSClassDeclares,
 } from "../../../../../util/ast";
 
-const templatePath = require.resolve(
-  "./entity-list-relation-filter.template.ts"
-);
+const templatePath = `${__dirname}/./entity-list-relation-filter.template.ts`;
 
 export async function createEntityListRelationFilter(
   entity: Entity,

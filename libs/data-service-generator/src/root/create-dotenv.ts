@@ -4,7 +4,7 @@ import { readCode } from "@amplication/code-gen-utils";
 import { replacePlaceholdersInCode } from "../util/text-file-parser";
 export const MODULE_PATH = `.env`;
 
-const templatePath = require.resolve("./create-dotenv.template.env");
+const templatePath = `${__dirname}/create-dotenv.template.env`;
 
 /**
  * Creates the .env file based on the given template with placeholder.

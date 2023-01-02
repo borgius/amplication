@@ -12,7 +12,7 @@ import { print } from "@amplication/code-gen-utils";
 import { getEntityIdType } from "../../../util/get-entity-id-type";
 import pluginWrapper from "../../../plugin-wrapper";
 
-const templatePath = require.resolve("./user-info.template.ts");
+const templatePath = `${__dirname}/user-info.template.ts`;
 
 export async function createUserInfo(): Promise<Module[]> {
   const { serverDirectories, userEntityName } = DsgContext.getInstance;

@@ -29,7 +29,7 @@ import { createServiceId } from "../service/create-service";
 import { createControllerId } from "../controller/create-controller";
 import pluginWrapper from "../../../plugin-wrapper";
 
-const testTemplatePath = require.resolve("./controller.spec.template.ts");
+const testTemplatePath = `${__dirname}/controller.spec.template.ts`;
 const TO_ISO_STRING_ID = builders.identifier("toISOString");
 const CREATE_RESULT_ID = builders.identifier("CREATE_RESULT");
 const FIND_ONE_RESULT_ID = builders.identifier("FIND_ONE_RESULT");

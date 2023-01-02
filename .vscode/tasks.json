@@ -9,7 +9,13 @@
     },
     {
       "label": "Start",
-      "dependsOn": ["Server", "Client", "Storage-gateway", "Build-manager"],
+      "dependsOn": [
+        "Server",
+        "Client",
+        "Storage-gateway",
+        "Build-manager",
+        "Generator-runner"
+      ],
       "problemMatcher": []
     },
     {
@@ -33,7 +39,15 @@
       "label": "Build-manager",
       "type": "shell",
       "command": "nx serve amplication-build-manager",
-      "detail": "Inspect:9329"
+      "detail": "Inspect:9329",
+      "problemMatcher": ["$webpack-builder"]
+    },
+    {
+      "label": "Generator-runner",
+      "type": "shell",
+      "command": "nx serve amplication-data-service-generator-runner",
+      "detail": "Inspect:9429",
+      "problemMatcher": ["$webpack-builder"]
     },
     {
       "type": "npm",

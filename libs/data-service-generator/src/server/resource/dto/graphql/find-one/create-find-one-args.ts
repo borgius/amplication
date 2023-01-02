@@ -7,7 +7,7 @@ import {
   getClassDeclarationById,
 } from "../../../../../util/ast";
 
-const templatePath = require.resolve("./find-one-args.template.ts");
+const templatePath = `${__dirname}/find-one-args.template.ts`;
 
 export async function createFindOneArgs(
   entity: Entity,

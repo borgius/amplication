@@ -24,8 +24,8 @@ import { createResolverId } from "../resolver/create-resolver";
 import DsgContext from "../../../dsg-context";
 import pluginWrapper from "../../../plugin-wrapper";
 
-const moduleTemplatePath = require.resolve("./module.template.ts");
-const moduleBaseTemplatePath = require.resolve("./module.base.template.ts");
+const moduleTemplatePath = `${__dirname}/module.template.ts`;
+const moduleBaseTemplatePath = `${__dirname}/module.base.template.ts`;
 
 export async function createModules(
   entityName: string,

@@ -8,7 +8,7 @@ import {
 } from "../../../../../util/ast";
 import { isInputType } from "../../nestjs-graphql.util";
 
-const templatePath = require.resolve("./update-args.template.ts");
+const templatePath = `${__dirname}/update-args.template.ts`;
 
 export async function createUpdateArgs(
   entity: Entity,

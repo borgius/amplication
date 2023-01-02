@@ -11,6 +11,7 @@ import { CodeGenerationRequest } from "./dto/CodeGenerationRequest";
 import axios from "axios";
 import { CodeGenerationSuccess } from "./dto/CodeGenerationSuccess";
 import { CodeGenerationFailure } from "./dto/CodeGenerationFailure";
+// import { generateCode } from "@amplication/data-service-generator-runner";
 
 @Controller("build-runner")
 export class BuildRunnerController {
@@ -64,16 +65,21 @@ export class BuildRunnerController {
     let args: CodeGenerationRequest;
     try {
       args = plainToInstance(CodeGenerationRequest, message.value);
-      console.log("Code Generation Request", args);
-      await this.buildRunnerService.saveDsgResourceData(
+      console.dir(args, { depth: null });
+      const resourceFile = await this.buildRunnerService.saveDsgResourceData(
         args.buildId,
         args.dsgResourceData
       );
       const url = this.configService.get(Env.DSG_RUNNER_URL);
-      await axios.post(url, {
-        resourceId: args.resourceId,
-        buildId: args.buildId,
-      });
+
+      if (url) {
+        await axios.post(url, {
+          resourceId: args.resourceId,
+          buildId: args.buildId,
+          specPath: resourceFile,
+          outputPath: this.buildRunnerService.jobsPath(args.buildId),
+        });
+      }
     } catch (error) {
       console.error(error);
       this.queueService.emitMessage(

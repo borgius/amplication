@@ -11,32 +11,45 @@ import { Env } from "../env";
 export class BuildRunnerService {
   constructor(private readonly configService: ConfigService<Env, true>) {}
 
-  async saveDsgResourceData(buildId: string, dsgResourceData: DSGResourceData) {
-    const savePath = join(
+  resourcePath(buildId: string) {
+    return join(
       this.configService.get(Env.DSG_JOBS_BASE_FOLDER),
       buildId,
       this.configService.get(Env.DSG_JOBS_RESOURCE_DATA_FILE)
     );
+  }
+
+  async saveDsgResourceData(buildId: string, dsgResourceData: DSGResourceData) {
+    const savePath = this.resourcePath(buildId);
 
     const saveDir = dirname(savePath);
     await fs.mkdir(saveDir, { recursive: true });
 
     await fs.writeFile(savePath, JSON.stringify(dsgResourceData));
+    return savePath;
   }
 
-  async copyFromJobToArtifact(resourceId: string, buildId: string) {
-    const jobPath = join(
+  jobsPath(buildId: string) {
+    return join(
       this.configService.get(Env.DSG_JOBS_BASE_FOLDER),
       buildId,
       this.configService.get(Env.DSG_JOBS_CODE_FOLDER)
     );
+  }
 
-    const artifactPath = join(
+  artifactPath(resourceId: string, buildId: string) {
+    return join(
       this.configService.get(Env.BUILD_ARTIFACTS_BASE_FOLDER),
       resourceId,
       buildId
     );
+  }
+
+  async copyFromJobToArtifact(resourceId: string, buildId: string) {
+    const jobPath = this.jobsPath(buildId);
+    const artifactPath = this.artifactPath(resourceId, buildId);
 
     await copy(jobPath, artifactPath);
+    return artifactPath;
   }
 }
