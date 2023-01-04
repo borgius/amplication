@@ -80,7 +80,7 @@
     {
       "label": "Generator-runner",
       "type": "shell",
-      "command": "nx serve amplication-data-service-generator-runner",
+      "command": "fkill :12000; nx serve amplication-data-service-generator-runner",
       "detail": "Inspect:9429",
       "problemMatcher": ["$webpack-builder"],
       "dependsOn": ["Kafka Connection", "DB Connection"]
