@@ -2,19 +2,51 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Docker",
       "type": "npm",
       "script": "docker:dev",
-      "label": "Docker",
       "problemMatcher": []
+    },
+    {
+      "label": "Kafka Connection",
+      "type": "shell",
+      "command": "timeout 600 bash -c 'until kcat -b localhost:9092 -L > /dev/null 2>&1; do sleep 1; echo -n \".\"; done'",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "revealProblems": "onProblem",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "close": true,
+        "group": "test"
+      }
+    },
+    {
+      "label": "DB Connection",
+      "type": "shell",
+      "command": "timeout 60 bash -c 'until PGPASSWORD=admin psql -h localhost -U admin -t -c \"SELECT 1\" > /dev/null 2>&1; do sleep 1; echo -n \".\"; done'",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "revealProblems": "onProblem",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "close": true,
+        "group": "test"
+      }
     },
     {
       "label": "Start",
       "dependsOn": [
+        "Docker",
         "Server",
         "Client",
         "Storage-gateway",
         "Build-manager",
-        "Generator-runner"
+        "Generator-runner",
+        "Pull-request"
       ],
       "problemMatcher": []
     },
@@ -22,7 +54,8 @@
       "label": "Server",
       "type": "shell",
       "command": "nx serve amplication-server",
-      "detail": "Inspect:9229"
+      "detail": "Inspect:9229",
+      "dependsOn": ["Kafka Connection", "DB Connection"]
     },
     {
       "label": "Client",
@@ -33,21 +66,32 @@
       "label": "Storage-gateway",
       "type": "shell",
       "command": "nx serve amplication-storage-gateway",
-      "detail": "Inspect:9129"
+      "detail": "Inspect:9129",
+      "dependsOn": ["Kafka Connection", "DB Connection"]
     },
     {
       "label": "Build-manager",
       "type": "shell",
       "command": "nx serve amplication-build-manager",
       "detail": "Inspect:9329",
-      "problemMatcher": ["$webpack-builder"]
+      "problemMatcher": ["$webpack-builder"],
+      "dependsOn": ["Kafka Connection", "DB Connection"]
     },
     {
       "label": "Generator-runner",
       "type": "shell",
       "command": "nx serve amplication-data-service-generator-runner",
       "detail": "Inspect:9429",
-      "problemMatcher": ["$webpack-builder"]
+      "problemMatcher": ["$webpack-builder"],
+      "dependsOn": ["Kafka Connection", "DB Connection"]
+    },
+    {
+      "label": "Pull-request",
+      "type": "shell",
+      "command": "nx serve amplication-git-pull-request-service",
+      "detail": "Inspect:9529",
+      "problemMatcher": ["$webpack-builder"],
+      "dependsOn": ["Kafka Connection", "DB Connection"]
     },
     {
       "type": "npm",

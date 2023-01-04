@@ -43,7 +43,9 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "amplication-git-pull-request-service:build"
+        "buildTarget": "amplication-git-pull-request-service:build",
+        "inspect": true,
+        "port": 9529
       },
       "configurations": {
         "production": {
