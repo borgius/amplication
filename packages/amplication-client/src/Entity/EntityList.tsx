@@ -94,7 +94,7 @@ const EntityList: React.FC<Props> = ({ match, innerRoutes }) => {
   );
   const subscription =
     getWorkspaceData.currentWorkspace.subscription?.subscriptionPlan;
-  const hideBanner = true;
+  const hideBanner = false;
 
   const errorMessage =
     formatError(errorLoading) || (error && formatError(error));
