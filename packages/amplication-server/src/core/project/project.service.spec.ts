@@ -13,11 +13,7 @@ import {
 } from "../../models";
 import { Environment } from "../environment/dto";
 import { Build } from "../build/dto/Build";
-import {
-  EnumResourceType,
-  EnumPendingChangeAction,
-  EnumPendingChangeOriginType,
-} from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 import { PendingChange } from "../resource/dto/PendingChange";
 import { ResourceService } from "../resource/resource.service";
 import { BuildService } from "../build/build.service";
@@ -105,7 +101,7 @@ const EXAMPLE_BLOCK: Block = {
 
 const EXAMPLE_RESOURCE: Resource = {
   id: EXAMPLE_RESOURCE_ID,
-  resourceType: EnumResourceType.Service,
+  resourceType: models.EnumResourceType.Service,
   createdAt: new Date(),
   updatedAt: new Date(),
   name: EXAMPLE_NAME,
@@ -118,8 +114,8 @@ const EXAMPLE_RESOURCE: Resource = {
 
 const EXAMPLE_CHANGED_ENTITY: PendingChange = {
   originId: EXAMPLE_ENTITY_ID,
-  action: EnumPendingChangeAction.Create,
-  originType: EnumPendingChangeOriginType.Entity,
+  action: models.EnumPendingChangeAction.Create,
+  originType: models.EnumPendingChangeOriginType.Entity,
   versionNumber: 1,
   origin: EXAMPLE_ENTITY,
   resource: EXAMPLE_RESOURCE,
@@ -127,8 +123,8 @@ const EXAMPLE_CHANGED_ENTITY: PendingChange = {
 
 const EXAMPLE_CHANGED_BLOCK: PendingChange = {
   originId: EXAMPLE_BLOCK_ID,
-  action: EnumPendingChangeAction.Create,
-  originType: EnumPendingChangeOriginType.Block,
+  action: models.EnumPendingChangeAction.Create,
+  originType: models.EnumPendingChangeOriginType.Block,
   versionNumber: 1,
   origin: EXAMPLE_BLOCK,
   resource: EXAMPLE_RESOURCE,

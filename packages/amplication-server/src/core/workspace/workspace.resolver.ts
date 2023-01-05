@@ -154,7 +154,9 @@ export class WorkspaceResolver {
   }
 
   @ResolveField(() => Subscription, { nullable: true })
-  async subscription(@Parent() workspace: Workspace): Promise<Subscription> {
+  async subscription(
+    @Parent() workspace: Workspace
+  ): Promise<Partial<Subscription>> {
     if (this.isBillingEnabled) {
       const subscription = await this.billingService.getSubscription(
         workspace.id

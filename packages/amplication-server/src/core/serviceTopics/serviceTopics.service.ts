@@ -11,10 +11,7 @@ import { EnumResourceType } from "../resource/dto/EnumResourceType";
 import { AmplicationError } from "../../errors/AmplicationError";
 import { BlockService } from "../block/block.service";
 import { DeleteServiceTopicsArgs } from "./dto/DeleteServiceTopicsArgs";
-import {
-  EnumMessagePatternConnectionOptions,
-  MessagePatternCreateInput,
-} from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 
 @Injectable()
 export class ServiceTopicsService extends BlockTypeService<
@@ -78,11 +75,11 @@ export class ServiceTopicsService extends BlockTypeService<
       EnumBlockType.Topic
     );
 
-    const patterns: MessagePatternCreateInput[] = [];
+    const patterns: models.MessagePatternCreateInput[] = [];
 
     serviceTopicList.forEach((topic) => {
       const pattern = {
-        type: EnumMessagePatternConnectionOptions.None,
+        type: models.EnumMessagePatternConnectionOptions.None,
         topicId: topic.id,
       };
       patterns.push(pattern);
@@ -123,7 +120,7 @@ export class ServiceTopicsService extends BlockTypeService<
 
       serviceTopics.patterns.splice(topicToRemove, 1);
 
-      const updatePatterns: MessagePatternCreateInput[] = [];
+      const updatePatterns: models.MessagePatternCreateInput[] = [];
       serviceTopics.patterns.forEach((pattern) => {
         updatePatterns.push({ type: pattern.type, topicId: pattern.topicId });
       });

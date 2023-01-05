@@ -34,7 +34,7 @@ import {
 import { DiffService } from "../../services/diff.service";
 import { isReservedName } from "./reservedNames";
 import { ReservedNameError } from "../resource/ReservedNameError";
-import { EnumResourceType } from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 import { Build } from "../build/dto/Build";
 import { Environment } from "../environment/dto";
 
@@ -145,7 +145,7 @@ const EXAMPLE_DELETED_ENTITY = {
 
 const EXAMPLE_RESOURCE: Resource = {
   id: EXAMPLE_RESOURCE_ID,
-  resourceType: EnumResourceType.Service,
+  resourceType: models.EnumResourceType.Service,
   createdAt: new Date(),
   updatedAt: new Date(),
   name: EXAMPLE_NAME,

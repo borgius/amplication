@@ -17,7 +17,7 @@ import { Commit, Resource, User } from "../../models";
 import { Action } from "../action/dto";
 import { EnumBuildStatus } from "./dto/EnumBuildStatus";
 import { CommitService } from "../commit/commit.service";
-import { EnumResourceType } from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 import { ResourceService } from "../resource/resource.service";
 import { AMPLICATION_LOGGER_PROVIDER } from "@amplication/nest-logger-module";
 
@@ -60,7 +60,7 @@ const EXAMPLE_BUILD: Build = {
 
 const EXAMPLE_RESOURCE: Resource = {
   id: EXAMPLE_RESOURCE_ID,
-  resourceType: EnumResourceType.Service,
+  resourceType: models.EnumResourceType.Service,
   createdAt: new Date(),
   updatedAt: new Date(),
   name: "exampleName",

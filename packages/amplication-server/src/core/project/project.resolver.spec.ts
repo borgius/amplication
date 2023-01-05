@@ -13,11 +13,7 @@ import { Environment } from "../environment/dto";
 import { Build } from "../build/dto/Build";
 import { ProjectResolver } from "./project.resolver";
 import { ProjectService } from "./project.service";
-import {
-  EnumResourceType,
-  EnumPendingChangeAction,
-  EnumPendingChangeOriginType,
-} from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 import { PendingChange } from "../resource/dto/PendingChange";
 import { ResourceService } from "../resource/resource.service";
 import { ConfigService } from "@nestjs/config";
@@ -88,7 +84,7 @@ const EXAMPLE_ENTITY: Entity = {
 
 const EXAMPLE_RESOURCE: Resource = {
   id: EXAMPLE_RESOURCE_ID,
-  resourceType: EnumResourceType.Service,
+  resourceType: models.EnumResourceType.Service,
   createdAt: new Date(),
   updatedAt: new Date(),
   name: EXAMPLE_NAME,
@@ -100,8 +96,8 @@ const EXAMPLE_RESOURCE: Resource = {
 };
 
 const EXAMPLE_PENDING_CHANGE: PendingChange = {
-  action: EnumPendingChangeAction.Create,
-  originType: EnumPendingChangeOriginType.Entity,
+  action: models.EnumPendingChangeAction.Create,
+  originType: models.EnumPendingChangeOriginType.Entity,
   originId: EXAMPLE_ORIGIN_ID,
   origin: EXAMPLE_ENTITY,
   versionNumber: EXAMPLE_VERSION_NUMBER,

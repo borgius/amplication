@@ -1,4 +1,4 @@
-import { Resource } from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 import {
   Button,
   CircularProgress,
@@ -18,7 +18,7 @@ import "./GitCreateRepo.scss";
 
 type Props = {
   gitProvider: EnumGitProvider;
-  resource: Resource;
+  resource: models.Resource;
   gitOrganizationId: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
   onCompleted: Function;

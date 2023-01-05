@@ -1,5 +1,6 @@
 export { getSchemaForDataType } from "./get-schema-for-data-type";
 export type { Schema } from "./get-schema-for-data-type";
+export * as models from "./models";
 export * as types from "./types";
 export * from "./code-gen-types";
 export * from "./plugins-types";

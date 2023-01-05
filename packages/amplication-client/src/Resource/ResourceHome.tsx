@@ -1,4 +1,4 @@
-import { EnumResourceType } from "@amplication/code-gen-types/models";
+import { models } from "@amplication/code-gen-types";
 import { CircleBadge } from "@amplication/design-system";
 import { gql } from "@apollo/client";
 import React, { useContext } from "react";
@@ -61,23 +61,26 @@ const ResourceHome = ({ match, innerRoutes }: Props) => {
           </div>
           <div className={`${CLASS_NAME}__tiles`}>
             <NewVersionTile resourceId={resourceId} />
-            {currentResource?.resourceType === EnumResourceType.Service && (
+            {currentResource?.resourceType ===
+              models.EnumResourceType.Service && (
               <OverviewTile resourceId={resourceId} />
             )}
             <SyncWithGithubTile resourceId={resourceId} />
             <ViewCodeViewTile resourceId={resourceId} />
-            {currentResource?.resourceType === EnumResourceType.Service && (
+            {currentResource?.resourceType ===
+              models.EnumResourceType.Service && (
               <EntitiesTile resourceId={resourceId} />
             )}
-            {currentResource?.resourceType === EnumResourceType.Service && (
+            {currentResource?.resourceType ===
+              models.EnumResourceType.Service && (
               <RolesTile resourceId={resourceId} />
             )}
             {currentResource?.resourceType ===
-              EnumResourceType.MessageBroker && (
+              models.EnumResourceType.MessageBroker && (
               <TopicsTile resourceId={resourceId} />
             )}
             {currentResource?.resourceType ===
-              EnumResourceType.MessageBroker && (
+              models.EnumResourceType.MessageBroker && (
               <ServicesTile resourceId={resourceId} />
             )}
             <DocsTile />
