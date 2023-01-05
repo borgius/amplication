@@ -54,8 +54,11 @@ const CLASS_NAME = "purchase-page";
 
 const PurchasePage = (props) => {
   const history = useHistory();
-  const backUrl = () =>
+  const backUrl = () => {
+    if (history.location.search === "?u=p") return history.push("/");
+
     history.action !== "POP" ? history.goBack() : history.push("/");
+  };
   const { currentWorkspace } = useContext(AppContext);
 
   const [purchaseWorkspace, setPurchaseWorkspace] =
@@ -79,7 +82,7 @@ const PurchasePage = (props) => {
             iconPosition={EnumIconPosition.Left}
             onClick={backUrl}
           >
-            back
+            Back
           </Button>
         </div>
         <div className={`${CLASS_NAME}__header`}>
@@ -90,6 +93,7 @@ const PurchasePage = (props) => {
           onWorkspaceSelected={handleSetCurrentWorkspace}
         />
         <StiggProvider
+          key={purchaseWorkspace.id}
           apiKey={REACT_APP_BILLING_API_KEY}
           customerId={purchaseWorkspace.id}
         >
@@ -115,13 +119,13 @@ const PurchasePage = (props) => {
                 priceNotSet: "Price not set",
               },
             }}
-            onPlanSelected={async ({ plan, customer, selectedBillingPeriod }) =>
+            onPlanSelected={async ({ plan, selectedBillingPeriod }) => {
               selectedPlanAction[plan.id](
                 props,
                 purchaseWorkspace,
                 selectedBillingPeriod
-              )
-            }
+              );
+            }}
           />
         </StiggProvider>
       </div>

@@ -42,7 +42,7 @@ const LazyRouteWrapper: React.FC<{
             <Redirect
               to={{
                 pathname: route.redirect,
-                search: `?${route.path}`,
+                search: `?u=p`,
               }}
             />
           ) : route.permission ? (
@@ -57,6 +57,7 @@ const LazyRouteWrapper: React.FC<{
                 to={{
                   pathname: "/login",
                   state: { from: location },
+                  search: location.search,
                 }}
               />
             )
@@ -92,8 +93,8 @@ export const routesGenerator: (
         {routes.map((route: RouteDef) => (
           <LazyRouteWrapper key={route.path} route={route} />
         ))}
-        <Route component={NotFoundPage} />
       </Route>
+      <Route component={NotFoundPage} />
     </Switch>
   );
 };
