@@ -67,7 +67,10 @@ export class BillingService {
     workspaceId: string,
     feature: BillingFeature
   ): Promise<Partial<MeteredEntitlement>> {
-    return {};
+    return {
+      hasAccess: true,
+      usageLimit: 10000,
+    };
     // const stiggClient = await this.getStiggClient();
     // return await stiggClient.getMeteredEntitlement({
     //   customerId: workspaceId,
