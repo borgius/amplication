@@ -75,6 +75,7 @@
     "ast-types": "^0.14.2",
     "bcrypt": "^5.0.1",
     "chalk": "^5.1.2",
+    "change-case": "^4.1.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "classnames": "^2.3.2",
@@ -156,6 +157,8 @@
     "zlib": "^1.0.5"
   },
   "devDependencies": {
+    "@amplication/plugin-auth-jwt": "^1.1.2",
+    "@amplication/plugin-formatter-prettier": "^0.0.1",
     "@babel/preset-react": "^7.14.5",
     "@graphql-codegen/cli": "2.6.3",
     "@graphql-codegen/typescript": "2.4.1",
@@ -244,6 +247,7 @@
     "path-browserify": "^1.0.1",
     "prettier": "^2.7.1",
     "prisma": "^4.8.0",
+    "prisma-query-log": "^3.2.0",
     "prisma-schema-dsl-types": "^1.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -180,7 +180,7 @@ export const DATA_TYPE_TO_DEFAULT_PROPERTIES: {
   [key in EnumDataType]: JsonObject;
 } = {
   [EnumDataType.SingleLineText]: {
-    maxLength: 1000,
+    maxLength: 128,
   },
   [EnumDataType.MultiLineText]: {
     maxLength: 1000,

@@ -8,21 +8,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Kafka Connection",
-      "type": "shell",
-      "command": "timeout 600 bash -c 'until kcat -b localhost:9092 -L > /dev/null 2>&1; do sleep 1; echo -n \".\"; done'",
-      "presentation": {
-        "echo": true,
-        "reveal": "never",
-        "revealProblems": "onProblem",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": false,
-        "close": true,
-        "group": "test"
-      }
-    },
-    {
       "label": "DB Connection",
       "type": "shell",
       "command": "timeout 60 bash -c 'until PGPASSWORD=admin psql -h localhost -U admin -t -c \"SELECT 1\" > /dev/null 2>&1; do sleep 1; echo -n \".\"; done'",
@@ -39,128 +24,30 @@
     },
     {
       "label": "Start",
-      "dependsOn": [
-        "Docker",
-        "Server",
-        "Client",
-        "Storage-gateway",
-        "Build-manager",
-        "Generator-runner",
-        "Pull-request"
-      ],
+      "dependsOn": ["Docker", "Server", "Client", "Generator-runner"],
       "problemMatcher": []
     },
     {
       "label": "Server",
       "type": "shell",
-      "command": "nx serve amplication-server",
+      "command": "fkill :3000 -f -s; nx serve amplication-server",
       "detail": "Inspect:9229",
-      "dependsOn": ["Kafka Connection", "DB Connection"]
+      "dependsOn": ["DB Connection"],
+      "problemMatcher": ["$webpack-builder"]
     },
     {
       "label": "Client",
       "type": "shell",
-      "command": "nx serve amplication-client"
-    },
-    {
-      "label": "Storage-gateway",
-      "type": "shell",
-      "command": "nx serve amplication-storage-gateway",
-      "detail": "Inspect:9129",
-      "dependsOn": ["Kafka Connection", "DB Connection"]
-    },
-    {
-      "label": "Build-manager",
-      "type": "shell",
-      "command": "nx serve amplication-build-manager",
-      "detail": "Inspect:9329",
-      "problemMatcher": ["$webpack-builder"],
-      "dependsOn": ["Kafka Connection", "DB Connection"]
+      "command": "nx serve amplication-client",
+      "problemMatcher": ["$webpack-builder"]
     },
     {
       "label": "Generator-runner",
       "type": "shell",
-      "command": "fkill :12000; nx serve amplication-data-service-generator-runner",
+      "command": "fkill :12000 -f -s; nx serve amplication-data-service-generator-runner",
       "detail": "Inspect:9429",
       "problemMatcher": ["$webpack-builder"],
-      "dependsOn": ["Kafka Connection", "DB Connection"]
-    },
-    {
-      "label": "Pull-request",
-      "type": "shell",
-      "command": "nx serve amplication-git-pull-request-service",
-      "detail": "Inspect:9529",
-      "problemMatcher": ["$webpack-builder"],
-      "dependsOn": ["Kafka Connection", "DB Connection"]
-    },
-    {
-      "type": "npm",
-      "script": "update-test-data-service-snapshot",
-      "path": "packages/amplication-data-service-generator/",
-      "problemMatcher": [],
-      "label": "npm: update-snapshot - packages/amplication-data-service-generator",
-      "detail": "jest -u src/tests/create-data-service.spec.ts"
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-container-builder/",
-      "problemMatcher": ["$tsc"],
-      "group": "build",
-      "label": "npm: build - packages/amplication-container-builder",
-      "detail": "tsc"
-    },
-    {
-      "type": "npm",
-      "script": "generate-test-data-service",
-      "path": "packages/amplication-data-service-generator/",
-      "problemMatcher": [],
-      "label": "npm: generate-test-data-service - packages/amplication-data-service-generator",
-      "detail": "ts-node scripts/generate-test-data-service.ts generated",
-      "dependsOn": ["npm: build - packages/amplication-data-service-generator"]
-    },
-    {
-      "type": "npm",
-      "script": "install",
-      "path": "packages/amplication-data-service-generator/generated/server",
-      "problemMatcher": [],
-      "label": "npm: install - packages/amplication-data-service-generator/generated/server",
-      "detail": "npm install",
-      "dependsOn": [
-        "npm: generate-test-data-service - packages/amplication-data-service-generator"
-      ]
-    },
-    {
-      "type": "npm",
-      "script": "install",
-      "path": "packages/amplication-data-service-generator/generated/admin",
-      "problemMatcher": [],
-      "label": "npm: install - packages/amplication-data-service-generator/generated/admin",
-      "detail": "npm install",
-      "dependsOn": [
-        "npm: generate-test-data-service - packages/amplication-data-service-generator"
-      ]
-    },
-    {
-      "type": "npm",
-      "script": "test",
-      "path": "packages/amplication-data-service-generator/generated/",
-      "problemMatcher": [],
-      "group": "test",
-      "label": "npm: test - packages/amplication-data-service-generator/generated",
-      "detail": "jest",
-      "dependsOn": [
-        "npm: generate-test-data-service - packages/amplication-data-service-generator"
-      ]
-    },
-    {
-      "type": "npm",
-      "script": "build",
-      "path": "packages/amplication-scheduler",
-      "label": "npm: build - packages/amplication-scheduler/",
-      "detail": "run-s build:generate-help build:generate-types build:compile",
-      "group": "build",
-      "problemMatcher": []
+      "dependsOn": ["DB Connection"]
     }
   ]
 }

@@ -1680,32 +1680,22 @@ export class EntityService {
     const name = camelCase(displayName);
 
     let dataType: EnumDataType | null = null;
+    const isIncludes = (name: string, keywords: string[]) =>
+      keywords.some((word) => name.includes(word));
+    const nameKeywords: [EnumDataType, string[]][] = [
+      [EnumDataType.DateTime, ["date"]],
+      [EnumDataType.MultiLineText, ["description", "comments"]],
+      [EnumDataType.Email, ["email"]],
+      [EnumDataType.OptionSet, ["status", "type"]],
+      [EnumDataType.Boolean, ["is"]],
+      [EnumDataType.DecimalNumber, ["price", "salary"]],
+      [EnumDataType.WholeNumber, ["quantity", "qty"]],
+    ];
+    dataType = nameKeywords.find(([, keywords]) =>
+      isIncludes(lowerCaseName, keywords)
+    )?.[0];
 
-    if (args.data.dataType) {
-      dataType = args.data.dataType as EnumDataType;
-    } else if (lowerCaseName.includes("date")) {
-      dataType = EnumDataType.DateTime;
-    } else if (
-      lowerCaseName.includes("description") ||
-      lowerCaseName.includes("comments")
-    ) {
-      dataType = EnumDataType.MultiLineText;
-    } else if (lowerCaseName.includes("email")) {
-      dataType = EnumDataType.Email;
-    } else if (lowerCaseName.includes("status")) {
-      dataType = EnumDataType.OptionSet;
-    } else if (lowerCaseName.startsWith("is")) {
-      dataType = EnumDataType.Boolean;
-    } else if (lowerCaseName.includes("price")) {
-      dataType = EnumDataType.DecimalNumber;
-    } else if (
-      lowerCaseName.includes("quantity") ||
-      lowerCaseName.includes("qty")
-    ) {
-      dataType = EnumDataType.WholeNumber;
-    }
-
-    if (dataType === EnumDataType.Lookup || dataType === null) {
+    if (dataType === EnumDataType.Lookup || !dataType) {
       // Find an entity with the field's display name
       const relatedEntity = await this.findEntityByNames(
         name,

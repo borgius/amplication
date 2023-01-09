@@ -78,5 +78,24 @@
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform"
   },
-  "prettier.configPath": ".prettierrc"
+  "prettier.configPath": ".prettierrc",
+  "VsCodeTaskButtons.showCounter": false,
+  "VsCodeTaskButtons.tasks": [
+    {
+      "label": "Docker",
+      "task": "Docker"
+    },
+    {
+      "label": "Client",
+      "task": "Client"
+    },
+    {
+      "label": "Server",
+      "task": "Server"
+    },
+    {
+      "label": "Generator",
+      "task": "Generator-runner"
+    }
+  ]
 }

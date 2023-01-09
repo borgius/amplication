@@ -20,6 +20,7 @@ import { TopicModule } from "../topic/topic.module";
 import { ServiceTopicsModule } from "../serviceTopics/serviceTopics.module";
 import { PluginInstallationModule } from "../pluginInstallation/pluginInstallation.module";
 import { BillingModule } from "../billing/billing.module";
+import { BuildHttpController } from "./build.http.controller";
 
 @Module({
   imports: [
@@ -43,6 +44,6 @@ import { BillingModule } from "../billing/billing.module";
   ],
   providers: [BuildService, BuildResolver, BuildFilesSaver],
   exports: [BuildService, BuildResolver],
-  controllers: [BuildController],
+  controllers: [BuildController, BuildHttpController],
 })
 export class BuildModule {}

@@ -17,4 +17,6 @@ export class Env {
 
   static readonly BILLING_ENABLED = "BILLING_ENABLED";
   static readonly BILLING_API_KEY = "BILLING_API_KEY";
+  static readonly DSG_RUNNER_URL = "DSG_RUNNER_URL";
+  static readonly BUILD_ARTIFACTS_FOLDER = "BUILD_ARTIFACTS_FOLDER";
 }

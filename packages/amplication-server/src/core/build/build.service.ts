@@ -1,4 +1,6 @@
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
+import axios from "axios";
+import { promises as fs } from "fs";
 import { ConfigService } from "@nestjs/config";
 import { Prisma, PrismaService } from "../../prisma";
 import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
@@ -324,6 +326,20 @@ export class BuildService {
         await Promise.all(logPromises);
 
         dataServiceGeneratorLogger.destroy();
+        const url = this.configService.get(Env.DSG_RUNNER_URL);
+        const artifacts = this.configService.get(Env.BUILD_ARTIFACTS_FOLDER);
+        const dsgFile = `${artifacts}/input.json`;
+        await fs.writeFile(dsgFile, JSON.stringify(dsgResourceData, null, 2));
+
+        if (url) {
+          await axios.post(url, {
+            resourceId: resourceId,
+            buildId: buildId,
+            specPath: dsgFile,
+            outputPath: artifacts,
+          });
+          return null;
+        }
 
         this.queueService.emitMessage(
           this.configService.get(Env.CODE_GENERATION_REQUEST_TOPIC),

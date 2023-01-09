@@ -3,7 +3,7 @@ import { generateCode } from "./generate-code";
 
 @Controller()
 export class AppController {
-  @Post("/example")
+  @Post()
   exmaple(
     @Body("resourceId") resourceId: string,
     @Body("buildId") buildId: string,

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FieldArray, FieldArrayRenderProps, getIn } from "formik";
-import { pascalCase } from "pascal-case";
+import { camelCase } from "change-case";
 import { get } from "lodash";
 
 import { Button, EnumButtonStyle } from "../Components/Button";
@@ -118,7 +118,7 @@ const OptionSetOption = ({
   const handleLabelChange = useCallback(
     (event) => {
       const label = event.target.value;
-      const newValue = pascalCase(event.target.value);
+      const newValue = camelCase(event.target.value);
       const option = { label: label, value: newValue };
       onChange(index, option);
     },
