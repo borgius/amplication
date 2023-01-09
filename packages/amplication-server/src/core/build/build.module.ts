@@ -21,6 +21,9 @@ import { ServiceTopicsModule } from "../serviceTopics/serviceTopics.module";
 import { PluginInstallationModule } from "../pluginInstallation/pluginInstallation.module";
 import { BillingModule } from "../billing/billing.module";
 import { BuildHttpController } from "./build.http.controller";
+import { ProjectConfigurationSettingsService } from "../projectConfigurationSettings/projectConfigurationSettings.service";
+import { BlockService } from "../block/block.service";
+import { DiffService } from "../../services/diff.service";
 
 @Module({
   imports: [
@@ -42,7 +45,14 @@ import { BuildHttpController } from "./build.http.controller";
     ServiceTopicsModule,
     BillingModule,
   ],
-  providers: [BuildService, BuildResolver, BuildFilesSaver],
+  providers: [
+    BuildService,
+    BuildResolver,
+    BuildFilesSaver,
+    DiffService,
+    BlockService,
+    ProjectConfigurationSettingsService,
+  ],
   exports: [BuildService, BuildResolver],
   controllers: [BuildController, BuildHttpController],
 })

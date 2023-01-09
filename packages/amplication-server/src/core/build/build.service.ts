@@ -1,6 +1,8 @@
+import { camelCase } from "camel-case";
+import { join } from "path";
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import axios from "axios";
-import { promises as fs } from "fs";
+import { mkdirSync, promises as fs } from "fs";
 import { ConfigService } from "@nestjs/config";
 import { Prisma, PrismaService } from "../../prisma";
 import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
@@ -25,8 +27,6 @@ import { ServiceSettingsService } from "../serviceSettings/serviceSettings.servi
 import { ActionService } from "../action/action.service";
 import { CommitService } from "../commit/commit.service";
 import { QueueService } from "../queue/queue.service";
-import { previousBuild } from "./utils";
-import { EnumGitProvider } from "../git/dto/enums/EnumGitProvider";
 import { CanUserAccessArgs } from "./dto/CanUserAccessArgs";
 import { TopicService } from "../topic/topic.service";
 import { ServiceTopicsService } from "../serviceTopics/serviceTopics.service";
@@ -43,8 +43,7 @@ import {
 } from "@amplication/nest-logger-module";
 import { BillingService } from "../billing/billing.service";
 import { BillingFeature } from "../billing/BillingFeature";
-import { EnumPullRequestMode } from "@amplication/git-utils";
-import { SendPullRequestArgs } from "./dto/sendPullRequest";
+import { ProjectConfigurationSettingsService } from "../projectConfigurationSettings/projectConfigurationSettings.service";
 
 export const HOST_VAR = "HOST";
 export const CLIENT_HOST_VAR = "CLIENT_HOST";
@@ -155,7 +154,7 @@ export class BuildService {
     private readonly actionService: ActionService,
     @Inject(forwardRef(() => ResourceService))
     private readonly resourceService: ResourceService,
-    private readonly commitService: CommitService,
+    private readonly projectConfiguration: ProjectConfigurationSettingsService,
     private readonly serviceSettingsService: ServiceSettingsService,
     private readonly userService: UserService,
     private readonly queueService: QueueService,
@@ -326,8 +325,16 @@ export class BuildService {
         await Promise.all(logPromises);
 
         dataServiceGeneratorLogger.destroy();
+        const projectConfig = await this.projectConfiguration.findOne({
+          where: { id: dsgResourceData.otherResources[0].resourceInfo.id },
+        });
         const url = this.configService.get(Env.DSG_RUNNER_URL);
-        const artifacts = this.configService.get(Env.BUILD_ARTIFACTS_FOLDER);
+        const artifacts = join(
+          this.configService.get(Env.BUILD_ARTIFACTS_FOLDER),
+          projectConfig.baseDirectory
+        );
+
+        mkdirSync(artifacts, { recursive: true });
         const dsgFile = `${artifacts}/input.json`;
         await fs.writeFile(dsgFile, JSON.stringify(dsgResourceData, null, 2));
 
