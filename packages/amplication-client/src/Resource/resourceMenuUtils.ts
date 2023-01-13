@@ -7,17 +7,11 @@ export const resourceMenuLayout: { [key: string]: string[] } = {
     "entities",
     "roles",
     "connections",
-    "github",
     "settings",
     "plugins",
   ],
-  [EnumResourceType.ProjectConfiguration]: ["github", "settings"],
-  [EnumResourceType.MessageBroker]: [
-    "topics",
-    "services",
-    "github",
-    "settings",
-  ],
+  [EnumResourceType.ProjectConfiguration]: ["settings"],
+  [EnumResourceType.MessageBroker]: ["topics", "services", "settings"],
 };
 
 export const linksMap = {
@@ -31,11 +25,11 @@ export const linksMap = {
     icon: "roles_outline",
     to: "/roles",
   },
-  github: {
-    title: "Connect to GitHub",
-    icon: "github",
-    to: "/github",
-  },
+  // github: {
+  //   title: "Connect to GitHub",
+  //   icon: "github",
+  //   to: "/github",
+  // },
   settings: {
     title: "Settings",
     icon: "settings",

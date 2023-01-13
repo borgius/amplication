@@ -93,40 +93,7 @@ const WorkspaceFooter: React.FC<unknown> = () => {
 
   return (
     <div className={CLASS_NAME}>
-      <div className={`${CLASS_NAME}__left`}>
-        {gitRepositoryFullName.includes("/") ? (
-          <div className={`${CLASS_NAME}__gh-connection`}>
-            <Icon
-              icon="github"
-              size="small"
-              className={`${CLASS_NAME}__github-icon`}
-            />
-            <GitRepoDetails />
-            <a
-              className={`${CLASS_NAME}__gh-link`}
-              href={githubUrl}
-              target="github"
-            >
-              Open With GitHub
-            </a>
-          </div>
-        ) : (
-          <div className={`${CLASS_NAME}__gh-disconnected`}>
-            <Icon
-              icon="github"
-              size="small"
-              className={`${CLASS_NAME}__github-icon`}
-            />
-            <Link
-              className={`${CLASS_NAME}__connect-to-gh`}
-              title={"Connect to GitHub"}
-              to={`/${currentWorkspace?.id}/${currentProject?.id}/${projectConfigurationResource?.id}/github`}
-            >
-              Connect to GitHub
-            </Link>
-          </div>
-        )}
-      </div>
+      <div className={`${CLASS_NAME}__left`}></div>
       <div className={`${CLASS_NAME}__right`}>
         <SkeletonWrapper
           showSkeleton={commitRunning}

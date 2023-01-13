@@ -65,7 +65,6 @@ const ResourceHome = ({ match, innerRoutes }: Props) => {
               models.EnumResourceType.Service && (
               <OverviewTile resourceId={resourceId} />
             )}
-            <SyncWithGithubTile resourceId={resourceId} />
             <ViewCodeViewTile resourceId={resourceId} />
             {currentResource?.resourceType ===
               models.EnumResourceType.Service && (

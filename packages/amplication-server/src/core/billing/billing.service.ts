@@ -14,12 +14,12 @@ import Stigg, {
   ReportUsageAck,
 } from "@stigg/node-server-sdk";
 import { SubscriptionStatus } from "@stigg/node-server-sdk/dist/api/generated/types";
-import { Env } from "../../env";
 import { EnumSubscriptionPlan, SubscriptionData } from "../subscription/dto";
 import { EnumSubscriptionStatus } from "../subscription/dto/EnumSubscriptionStatus";
 import { Subscription } from "../subscription/dto/Subscription";
 import { BillingFeature } from "./BillingFeature";
 import { BillingPlan } from "./BillingPlan";
+import { SegmentAnalyticsService } from "../../services/segmentAnalytics/segmentAnalytics.service";
 
 @Injectable()
 export class BillingService {
@@ -29,24 +29,14 @@ export class BillingService {
   constructor(
     @Inject(AMPLICATION_LOGGER_PROVIDER)
     private readonly logger: AmplicationLogger,
+    private readonly analytics: SegmentAnalyticsService,
     configService: ConfigService
-  ) {
-    // const stiggApiKey = configService.get(Env.BILLING_API_KEY);
-    // this.stiggClient = Stigg.initialize({ apiKey: stiggApiKey });
-    // this.clientHost = configService.get(Env.CLIENT_HOST);
-  }
+  ) {}
 
   async getStiggClient() {
     return {
       async provisionCustomer(cust) {},
     };
-    // try {
-    //   await this.stiggClient.waitForInitialization();
-    //   return this.stiggClient;
-    // } catch (err) {
-    //   this.logger.error(err);
-    //   throw err;
-    // }
   }
 
   async reportUsage(
@@ -55,12 +45,14 @@ export class BillingService {
     value = 1
   ): Promise<ReportUsageAck> {
     return { measurementId: "" };
-    // const stiggClient = await this.getStiggClient();
-    // return await stiggClient.reportUsage({
-    //   customerId: workspaceId,
-    //   featureId: feature,
-    //   value: value,
-    // });
+  }
+
+  async setUsage(
+    workspaceId: string,
+    feature: BillingFeature,
+    value: number
+  ): Promise<Partial<ReportUsageAck>> {
+    return {};
   }
 
   async getMeteredEntitlement(
@@ -71,11 +63,6 @@ export class BillingService {
       hasAccess: true,
       usageLimit: 10000,
     };
-    // const stiggClient = await this.getStiggClient();
-    // return await stiggClient.getMeteredEntitlement({
-    //   customerId: workspaceId,
-    //   featureId: feature,
-    // });
   }
 
   async getNumericEntitlement(
@@ -83,11 +70,6 @@ export class BillingService {
     feature: BillingFeature
   ): Promise<Partial<NumericEntitlement>> {
     return {};
-    // const stiggClient = await this.getStiggClient();
-    // return await stiggClient.getNumericEntitlement({
-    //   customerId: workspaceId,
-    //   featureId: feature,
-    // });
   }
 
   async getBooleanEntitlement(
@@ -95,33 +77,17 @@ export class BillingService {
     feature: BillingFeature
   ): Promise<Partial<BooleanEntitlement>> {
     return {};
-    // const stiggClient = await this.getStiggClient();
-    // return await stiggClient.getBooleanEntitlement({
-    //   customerId: workspaceId,
-    //   featureId: feature,
-    // });
   }
 
   async provisionSubscription(
     workspaceId: string,
     planId: string,
     billingPeriod: BillingPeriod,
+    intentionType: "UPGRADE_PLAN" | "DOWNGRADE_PLAN",
     cancelUrl: string,
     successUrl: string
   ): Promise<Partial<ProvisionSubscriptionResult>> {
     return {};
-    // const stiggClient = await this.getStiggClient();
-    // return await stiggClient.provisionSubscription({
-    //   customerId: workspaceId,
-    //   planId: planId,
-    //   billingPeriod: billingPeriod,
-    //   awaitPaymentConfirmation: true,
-    //   checkoutOptions: {
-    //     allowPromoCodes: true,
-    //     cancelUrl: new URL(successUrl, this.clientHost).href,
-    //     successUrl: new URL(cancelUrl, this.clientHost).href,
-    //   },
-    // });
   }
 
   async getSubscription(
@@ -136,34 +102,6 @@ export class BillingService {
       updatedAt: new Date(),
       subscriptionData: new SubscriptionData(),
     };
-    // try {
-    //   const stiggClient = await this.getStiggClient();
-    //   const workspace = await stiggClient.getCustomer(workspaceId);
-
-    //   const activeSub = await workspace.subscriptions.find((subscription) => {
-    //     return subscription.status === SubscriptionStatus.Active;
-    //   });
-
-    //   if (activeSub.plan.id === BillingPlan.Free) {
-    //     return null;
-    //   }
-
-    //   const amplicationSub = {
-    //     id: activeSub.id,
-    //     status: this.mapSubscriptionStatus(activeSub.status),
-    //     workspaceId: workspaceId,
-    //     subscriptionPlan: this.mapSubscriptionPlan(
-    //       activeSub.plan.id as BillingPlan
-    //     ),
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //     subscriptionData: new SubscriptionData(),
-    //   };
-
-    //   return amplicationSub;
-    // } catch (error) {
-    //   return null; //on any exception, use free plan
-    // }
   }
 
   mapSubscriptionStatus(status: SubscriptionStatus): EnumSubscriptionStatus {

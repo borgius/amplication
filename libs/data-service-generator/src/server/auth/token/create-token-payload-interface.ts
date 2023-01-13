@@ -8,6 +8,7 @@ import {
 import { readFile, print } from "@amplication/code-gen-utils";
 import { interpolate, removeTSClassDeclares } from "../../../util/ast";
 import { builders, namedTypes } from "ast-types";
+
 import { getEntityIdType } from "../../../util/get-entity-id-type";
 import pluginWrapper from "../../../plugin-wrapper";
 

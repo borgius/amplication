@@ -45,6 +45,12 @@ function ResourceList() {
     setError(null);
   }, [setError]);
 
+  const handleResourceClick = () => {
+    trackEvent({
+      eventName: AnalyticsEventNames.UpgradeOnResourceListClick,
+    });
+  };
+
   const [deleteResource] = useMutation<TDeleteData>(DELETE_RESOURCE, {
     update(cache, { data }) {
       if (!data) return;
@@ -82,7 +88,11 @@ function ResourceList() {
   );
   const subscription =
     getWorkspaceData.currentWorkspace.subscription?.subscriptionPlan;
-  const hideBanner = false;
+
+  const hideNotifications = {
+    hasAccess: true,
+  };
+
   const errorMessage =
     formatError(errorResources) || (error && formatError(error));
 
@@ -112,10 +122,11 @@ function ResourceList() {
       </div>
       {loadingResources && <CircularProgress centerToParent />}
 
-      {!subscription && hideBanner && (
+      {!subscription && !hideNotifications.hasAccess && (
         <LimitationNotification
           description="With the current plan, you can use up to 3 services."
           link={`/${getWorkspaceData.currentWorkspace.id}/purchase`}
+          handleClick={handleResourceClick}
         />
       )}
 

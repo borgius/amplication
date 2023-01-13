@@ -30,8 +30,8 @@ export function dispatch(event: Partial<Event>) {
   if (REACT_APP_AMPLITUDE_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const analytics = window.analytics;
-    analytics.track(eventName || MISSING_EVENT_NAME, rest);
+    // const analytics = window.analytics;
+    // analytics.track(eventName || MISSING_EVENT_NAME, rest);
   }
 }
 
@@ -39,11 +39,11 @@ export function init() {
   if (REACT_APP_AMPLITUDE_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const analytics = window.analytics;
-    analytics.load(REACT_APP_AMPLITUDE_API_KEY);
-    dispatch({
-      eventName: AnalyticsEventNames.AppSessionStart,
-    });
+    // const analytics = window.analytics;
+    // analytics.load(REACT_APP_AMPLITUDE_API_KEY);
+    // dispatch({
+    //   eventName: AnalyticsEventNames.AppSessionStart,
+    // });
   }
 }
 
@@ -56,8 +56,8 @@ export function identity(userId: string, props: EventProps) {
   if (REACT_APP_AMPLITUDE_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const analytics = window.analytics;
-    analytics.identify(userId, props);
+    // const analytics = window.analytics;
+    // analytics.identify(userId, props);
   }
 }
 
@@ -66,7 +66,7 @@ export function page(name?: string, props?: EventProps) {
   if (REACT_APP_AMPLITUDE_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const analytics = window.analytics;
-    analytics.page(name, props);
+    // const analytics = window.analytics;
+    // analytics.page(name, props);
   }
 }

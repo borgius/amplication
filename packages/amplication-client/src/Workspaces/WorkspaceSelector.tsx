@@ -60,9 +60,6 @@ function WorkspaceSelector() {
               <span className={`${CLASS_NAME}__current__name`}>
                 {currentWorkspace.name}
               </span>
-              <span className={`${CLASS_NAME}__current__plan`}>
-                {currentWorkspace.subscription?.subscriptionPlan || "Free"} Plan
-              </span>
             </div>
             <Button
               buttonStyle={EnumButtonStyle.Text}
