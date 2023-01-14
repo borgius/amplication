@@ -1,9 +1,9 @@
-import { camelCase } from "camel-case";
 import { join } from "path";
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import axios from "axios";
 import { mkdirSync, promises as fs } from "fs";
 import { ConfigService } from "@nestjs/config";
+import { simpleGit, SimpleGit, SimpleGitOptions } from "simple-git";
 import { Prisma, PrismaService } from "../../prisma";
 import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
 import { omit, orderBy } from "lodash";
@@ -25,7 +25,6 @@ import {
 import { UserService } from "../user/user.service";
 import { ServiceSettingsService } from "../serviceSettings/serviceSettings.service";
 import { ActionService } from "../action/action.service";
-import { CommitService } from "../commit/commit.service";
 import { QueueService } from "../queue/queue.service";
 import { CanUserAccessArgs } from "./dto/CanUserAccessArgs";
 import { TopicService } from "../topic/topic.service";
@@ -329,10 +328,16 @@ export class BuildService {
           where: { id: dsgResourceData.otherResources[0].resourceInfo.id },
         });
         const url = this.configService.get(Env.DSG_RUNNER_URL);
+
         const artifacts = join(
           this.configService.get(Env.BUILD_ARTIFACTS_FOLDER),
           projectConfig.baseDirectory
         );
+
+        const git: SimpleGit = simpleGit(artifacts);
+        const status = git.status();
+        const branches = git.branchLocal();
+        console.log({ branches, status });
 
         mkdirSync(artifacts, { recursive: true });
         const dsgFile = `${artifacts}/input.json`;
