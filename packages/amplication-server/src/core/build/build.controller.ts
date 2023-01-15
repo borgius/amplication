@@ -66,30 +66,6 @@ export class BuildController {
     );
   }
 
-  @EventPattern(
-    EnvironmentVariables.instance.get(Env.CREATE_PR_SUCCESS_TOPIC, true)
-  )
-  async onPullRequestCreated(@Payload() message: KafkaMessage): Promise<void> {
-    try {
-      const args = plainToInstance(CreatePRSuccess, message.value);
-      await this.buildService.onCreatePRSuccess(args);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  @EventPattern(
-    EnvironmentVariables.instance.get(Env.CREATE_PR_FAILURE_TOPIC, true)
-  )
-  async onCreatePRFailure(@Payload() message: KafkaMessage): Promise<void> {
-    try {
-      const args = plainToInstance(CreatePRFailure, message.value);
-      await this.buildService.onCreatePRFailure(args);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   @EventPattern(EnvironmentVariables.instance.get(Env.DSG_LOG_TOPIC, true))
   async onDsgLog(@Payload() message: KafkaMessage): Promise<void> {
     const logEntry = plainToInstance(LogEntryDto, message.value);

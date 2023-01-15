@@ -52,8 +52,8 @@ const DirectoriesProjectConfigurationSettingsForm: React.FC<{}> = () => {
                   <TextField
                     className={`${CLASS_NAME}__formWrapper_field`}
                     name="baseDirectory"
-                    placeholder="./"
-                    label="Base directory"
+                    placeholder=""
+                    label={`Directory of target project. Related to BUILD_ARTIFACTS_FOLDER`}
                     value={
                       projectConfigurationData?.projectConfigurationSettings
                         .baseDirectory || ""

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export class Env {
+  static readonly AMP_BRANCH = "AMP_BRANCH";
   static readonly CLIENT_HOST = "CLIENT_HOST";
 
   static readonly CODE_GENERATION_REQUEST_TOPIC =

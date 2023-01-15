@@ -1,12 +1,11 @@
 import { join } from "path";
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import axios from "axios";
-import { mkdirSync, promises as fs } from "fs";
+import { existsSync, promises as fs } from "fs";
 import { ConfigService } from "@nestjs/config";
-import { simpleGit, SimpleGit, SimpleGitOptions } from "simple-git";
+import { simpleGit, SimpleGit } from "simple-git";
 import { Prisma, PrismaService } from "../../prisma";
-import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
-import { omit, orderBy } from "lodash";
+import { orderBy } from "lodash";
 import * as CodeGenTypes from "@amplication/code-gen-types";
 import { ResourceRole, User } from "../../models";
 import { Build } from "./dto/Build";
@@ -31,15 +30,12 @@ import { TopicService } from "../topic/topic.service";
 import { ServiceTopicsService } from "../serviceTopics/serviceTopics.service";
 import { PluginInstallationService } from "../pluginInstallation/pluginInstallation.service";
 import { EnumResourceType } from "../resource/dto/EnumResourceType";
-import { CreatePRSuccess } from "./dto/CreatePRSuccess";
-import { CreatePRFailure } from "./dto/CreatePRFailure";
 import { Env } from "../../env";
 import {
   AmplicationLogger,
   AMPLICATION_LOGGER_PROVIDER,
 } from "@amplication/nest-logger-module";
 import { BillingService } from "../billing/billing.service";
-import { BillingFeature } from "../billing/BillingFeature";
 import { ProjectConfigurationSettingsService } from "../projectConfigurationSettings/projectConfigurationSettings.service";
 
 export const HOST_VAR = "HOST";
@@ -107,8 +103,6 @@ export const ACTION_LOG_LEVEL: {
   debug: EnumActionLogLevel.Debug,
 };
 
-const META_KEYS_TO_OMIT = [LEVEL, MESSAGE, SPLAT, "level"];
-
 export function createInitialStepData(
   version: string,
   message: string
@@ -139,6 +133,16 @@ export function createInitialStepData(
     },
   };
 }
+type BuildData = {
+  build: Build;
+  user: User;
+  dsgResourceData: CodeGenTypes.DSGResourceData & { currentBrach?: string };
+  dsgRunnerUrl: string;
+  ampBranch: string;
+  artifacts: string;
+  dsgFile: string;
+};
+
 @Injectable()
 export class BuildService {
   private readonly isBillingEnabled: boolean;
@@ -292,9 +296,61 @@ export class BuildService {
     if (!step) {
       throw new Error("Could not find generate code step");
     }
+    const { build, ampBranch, artifacts, dsgFile } = await this.getBuildData(
+      buildId,
+      step
+    );
+    const dsgContext = JSON.parse((await fs.readFile(dsgFile)).toString());
+    const lastBranch = dsgContext.currentBrach;
+
+    const git: SimpleGit = simpleGit(artifacts);
+
+    if (status === EnumActionStepStatus.Success) {
+      await git.add(".");
+      await git.commit(build.message || "Update Entities", ["--no-verify"]);
+      await git.checkout(lastBranch);
+      await git.merge([ampBranch]);
+    } else {
+      //
+    }
     await this.actionService.complete(step, status);
   }
 
+  private async getBuildData(
+    buildId: string,
+    step: ActionStep
+  ): Promise<BuildData> {
+    const build = await this.findOne({ where: { id: buildId } });
+    const { resourceId, userId, version: buildVersion } = build;
+    const user = await this.userService.findUser({ where: { id: userId } });
+    const dsgResourceData = await this.getDSGResourceData(
+      resourceId,
+      buildId,
+      buildVersion,
+      user
+    );
+    const projectConfig = await this.projectConfiguration.findOne({
+      where: { id: dsgResourceData.otherResources[0].resourceInfo.id },
+    });
+    const dsgRunnerUrl = this.configService.get(Env.DSG_RUNNER_URL);
+
+    const ampBranch = this.configService.get(Env.AMP_BRANCH, "amplication");
+    const artifacts = join(
+      this.configService.get(Env.BUILD_ARTIFACTS_FOLDER),
+      projectConfig.baseDirectory
+    );
+    const dsgFile = `${artifacts}/.${ampBranch}.json`;
+
+    return {
+      build,
+      user,
+      dsgResourceData,
+      dsgRunnerUrl,
+      ampBranch,
+      artifacts,
+      dsgFile,
+    };
+  }
   /**
    * Generates code for given build and saves it to storage
    * @DSG The connection between the server and the DSG (Data Service Generator)
@@ -307,58 +363,51 @@ export class BuildService {
       GENERATE_STEP_NAME,
       GENERATE_STEP_MESSAGE,
       async (step) => {
-        const { resourceId, id: buildId, version: buildVersion } = build;
-
-        const logger = this.logger.child({
-          buildId: build.id,
-        });
+        const logger = this.logger.child({ buildId: build.id });
 
         logger.info("Preparing build generation message");
-
-        const dsgResourceData = await this.getDSGResourceData(
-          resourceId,
-          buildId,
-          buildVersion,
-          user
-        );
+        const { dsgResourceData, dsgRunnerUrl, ampBranch, artifacts, dsgFile } =
+          await this.getBuildData(build.id, step);
 
         logger.info("Writing build generation message to queue");
 
-        const projectConfig = await this.projectConfiguration.findOne({
-          where: { id: dsgResourceData.otherResources[0].resourceInfo.id },
-        });
-        const url = this.configService.get(Env.DSG_RUNNER_URL);
+        try {
+          if (!existsSync(artifacts))
+            throw `Artifact folder not exists. It should be initialized git project. (${artifacts})`;
+          const git: SimpleGit = simpleGit(artifacts);
+          const gitStatus = await git.status();
+          if (!gitStatus.isClean())
+            throw `Git status is not clear at destination folder: ${artifacts}`;
 
-        const artifacts = join(
-          this.configService.get(Env.BUILD_ARTIFACTS_FOLDER),
-          projectConfig.baseDirectory
-        );
+          // status.current
+          const { branches } = await git.branchLocal();
+          if (branches[ampBranch]) {
+            await git.checkout(ampBranch);
+          } else {
+            await git.checkoutLocalBranch(ampBranch);
+          }
+          dsgResourceData.currentBrach = gitStatus.current;
 
-        const git: SimpleGit = simpleGit(artifacts);
-        const status = git.status();
-        const branches = git.branchLocal();
-        console.log({ branches, status });
-
-        mkdirSync(artifacts, { recursive: true });
-        const dsgFile = `${artifacts}/input.json`;
-        await fs.writeFile(dsgFile, JSON.stringify(dsgResourceData, null, 2));
-
-        if (url) {
-          await axios.post(url, {
-            resourceId: resourceId,
-            buildId: buildId,
+          await fs.writeFile(dsgFile, JSON.stringify(dsgResourceData, null, 2));
+          await axios.post(dsgRunnerUrl, {
+            resourceId: build.resourceId,
+            buildId: build.id,
             specPath: dsgFile,
             outputPath: artifacts,
           });
-          return null;
+        } catch (error) {
+          const msg = error.message || error;
+          logger.info(msg);
+          await this.actionService.logByStepId(
+            step.id,
+            ACTION_LOG_LEVEL.error,
+            msg
+          );
+          await this.completeCodeGenerationStep(
+            build.id,
+            EnumActionStepStatus.Failed
+          );
         }
-
-        this.queueService.emitMessage(
-          this.configService.get(Env.CODE_GENERATION_REQUEST_TOPIC),
-          JSON.stringify({ resourceId, buildId, dsgResourceData })
-        );
-        logger.info("Build generation message sent");
-
         return null;
       },
       true
@@ -373,69 +422,6 @@ export class BuildService {
         },
       },
     });
-  }
-
-  public async onCreatePRSuccess(response: CreatePRSuccess): Promise<void> {
-    const build = await this.findOne({ where: { id: response.buildId } });
-    const steps = await this.actionService.getSteps(build.actionId);
-    const step = steps.find((step) => step.name === PUSH_TO_GITHUB_STEP_NAME);
-
-    try {
-      await this.resourceService.reportSyncMessage(
-        build.resourceId,
-        "Sync Completed Successfully"
-      );
-
-      await this.actionService.logInfo(step, response.url, {
-        githubUrl: response.url,
-      });
-      await this.actionService.logInfo(step, PUSH_TO_GITHUB_STEP_FINISH_LOG);
-      await this.actionService.complete(step, EnumActionStepStatus.Success);
-
-      if (this.isBillingEnabled) {
-        const workspace = await this.resourceService.getResourceWorkspace(
-          build.resourceId
-        );
-        await this.billingService.reportUsage(
-          workspace.id,
-          BillingFeature.CodePushToGit
-        );
-      }
-    } catch (error) {
-      await this.actionService.logInfo(step, PUSH_TO_GITHUB_STEP_FAILED_LOG);
-      await this.actionService.logInfo(step, error);
-      await this.actionService.complete(step, EnumActionStepStatus.Failed);
-      await this.resourceService.reportSyncMessage(
-        build.resourceId,
-        `Error: ${error}`
-      );
-    }
-  }
-
-  public async onCreatePRFailure(response: CreatePRFailure): Promise<void> {
-    const build = await this.findOne({ where: { id: response.buildId } });
-    const steps = await this.actionService.getSteps(build.actionId);
-    const step = steps.find((step) => step.name === PUSH_TO_GITHUB_STEP_NAME);
-
-    await this.resourceService.reportSyncMessage(
-      build.resourceId,
-      `Error: ${response.errorMessage}`
-    );
-
-    await this.actionService.logInfo(step, PUSH_TO_GITHUB_STEP_FAILED_LOG);
-    await this.actionService.logInfo(step, response.errorMessage);
-    await this.actionService.complete(step, EnumActionStepStatus.Failed);
-  }
-
-  private async createLog(
-    step: ActionStep,
-    info: { message: string }
-  ): Promise<void> {
-    const { message, ...metaInfo } = info;
-    const level = ACTION_LOG_LEVEL[info[LEVEL]];
-    const meta = omit(metaInfo, META_KEYS_TO_OMIT);
-
-    await this.actionService.log(step, level, message, meta);
   }
 
   /**

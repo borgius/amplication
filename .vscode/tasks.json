@@ -44,7 +44,7 @@
     {
       "label": "Generator-runner",
       "type": "shell",
-      "command": "fkill :12000 -f -s; nx serve amplication-data-service-generator-runner",
+      "command": "fkill :3002 -f -s; nx serve amplication-data-service-generator-runner",
       "detail": "Inspect:9429",
       "problemMatcher": ["$webpack-builder"],
       "dependsOn": ["DB Connection"]
