@@ -28,7 +28,7 @@ export class AuthController {
     @Inject(AMPLICATION_LOGGER_PROVIDER)
     private readonly logger: AmplicationLogger
   ) {
-    this.host = process.env.CLIENT_HOST || "http://localhost:3001";
+    this.host = process.env.CLIENT_HOST || "http://localhost:53001";
   }
 
   @UseInterceptors(MorganInterceptor("combined"))

@@ -52,12 +52,12 @@ npx nx build amplication-server
 | ----------- | ----------- | ----------- |
 | DEBUG_MODE  | debug level         | 1           |
 | NODE_ENV    | environment mode    | development |
-| POSTGRESQL_URL | connection url to the database | postgresql://admin:admin@localhost:5432/amplication |
+| POSTGRESQL_URL | connection url to the database | postgresql://admin:admin@localhost:55432/amplication |
 | POSTGRESQL_USER | username for the local database | admin |
 | POSTGRESQL_PASSWORD | password for the local database | admin |
 | CORS_ENABLE | enable CORS | 1 |
-| PORT | the post that the server is running on | 3000 |
-| HOST | localhost | http://localhost:3000 |
+| PORT | the post that the server is running on | 53000 |
+| HOST | localhost | http://localhost:53000 |
 | GRAPHQL_DEBUG | GraphQL debug | 1 |
 | PLAYGROUND_ENABLE | enable GraphQL playground | 1 |
 | JWT_SECRET | JWT secret | XAFzBpM3es |

@@ -21,7 +21,7 @@ You can find a full list of targets in the [project.json](/Users/arielweinberger
 
 Runs the app in development mode.
 
-Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
+Open [http://localhost:53001](http://localhost:53001) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.

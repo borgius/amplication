@@ -10,7 +10,7 @@
     {
       "label": "DB Connection",
       "type": "shell",
-      "command": "timeout 60 bash -c 'until PGPASSWORD=admin psql -h localhost -U admin -t -c \"SELECT 1\" > /dev/null 2>&1; do sleep 1; echo -n \".\"; done'",
+      "command": "timeout 180 bash -c 'until PGPASSWORD=admin psql -h localhost -p 55432 -U admin -t -c \"SELECT 1\" > /dev/null 2>&1; do sleep 1; echo -n \".\"; done'",
       "presentation": {
         "echo": true,
         "reveal": "never",
