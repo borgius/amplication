@@ -1,17 +1,17 @@
 import * as common from "@nestjs/common";
 import * as nestAccessControl from "nest-access-control";
 // @ts-ignore
-import * as defaultAuthGuard from "../auth/defaultAuth.guard";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 // @ts-ignore
-import * as abacUtil from "../auth/abac.util";
+import * as abacUtil from "../../auth/abac.util";
 import { Request } from "express";
 // @ts-ignore
-import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import { ApiNestedQuery } from "../../../decorators/api-nested-query.decorator";
 import { plainToClass } from "class-transformer";
 // @ts-ignore
-import * as errors from "../../errors";
+import * as errors from "../../../errors";
 // @ts-ignore
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
+import { AclFilterResponseInterceptor } from "../../../interceptors/aclFilterResponse.interceptor";
 
 declare interface WHERE_UNIQUE_INPUT {
   id: string;

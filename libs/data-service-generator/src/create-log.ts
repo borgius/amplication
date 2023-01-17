@@ -6,7 +6,7 @@ export const createLog = async (log: LogEntry): Promise<void> => {
   try {
     const logContext = { buildId: process.env.BUILD_ID, ...log };
     if (process.env.REMOTE_ENV !== "true") {
-      logger.info("Running locally, skipping log reporting", logContext);
+      // logger.info("Running locally, skipping log reporting", logContext);
       return;
     }
 

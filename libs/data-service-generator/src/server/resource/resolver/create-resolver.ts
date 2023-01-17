@@ -160,8 +160,8 @@ async function createResolverModule({
 }: CreateEntityResolverParams): Promise<Module[]> {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { serverDirectories, DTOs } = DsgContext.getInstance;
-  const modulePath = `${serverDirectories.srcDirectory}/${entityName}/${entityName}.resolver.ts`;
-  const moduleBasePath = `${serverDirectories.srcDirectory}/${entityName}/base/${entityName}.resolver.base.ts`;
+  const modulePath = `${serverDirectories.entitiesDirectory}/${entityName}/${entityName}.resolver.ts`;
+  const moduleBasePath = `${serverDirectories.entitiesDirectory}/${entityName}/base/${entityName}.resolver.base.ts`;
 
   interpolate(template, templateMapping);
 
@@ -220,7 +220,7 @@ async function createResolverBaseModule({
 }: CreateEntityResolverBaseParams): Promise<Module[]> {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { serverDirectories, DTOs } = DsgContext.getInstance;
-  const moduleBasePath = `${serverDirectories.srcDirectory}/${entityName}/base/${entityName}.resolver.base.ts`;
+  const moduleBasePath = `${serverDirectories.entitiesDirectory}/${entityName}/base/${entityName}.resolver.base.ts`;
   const entityDTOs = DTOs[entity.name];
   const { entity: entityDTO } = entityDTOs;
   interpolate(template, templateMapping);

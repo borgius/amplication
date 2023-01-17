@@ -30,7 +30,10 @@
     {
       "label": "Server",
       "type": "shell",
-      "command": "fkill :3000 -f -s; nx serve amplication-server",
+      "command": "fkill :53000 -f -s; npm run serve",
+      "options": {
+        "cwd": "${workspaceRoot}/packages/amplication-server"
+      },
       "detail": "Inspect:9229",
       "dependsOn": ["DB Connection"],
       "problemMatcher": ["$webpack-builder"]
@@ -44,8 +47,11 @@
     {
       "label": "Generator-runner",
       "type": "shell",
-      "command": "fkill :3002 -f -s; nx serve amplication-data-service-generator-runner",
+      "command": "fkill :53002 -f -s; npm run serve",
       "detail": "Inspect:9429",
+      "options": {
+        "cwd": "${workspaceRoot}/packages/amplication-data-service-generator-runner"
+      },
       "problemMatcher": ["$webpack-builder"],
       "dependsOn": ["DB Connection"]
     }

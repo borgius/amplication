@@ -3,13 +3,13 @@ import * as graphql from "@nestjs/graphql";
 import * as apollo from "apollo-server-express";
 import * as nestAccessControl from "nest-access-control";
 // @ts-ignore
-import { GqlDefaultAuthGuard } from "../../auth/gqlDefaultAuth.guard";
+import { GqlDefaultAuthGuard } from "../../../auth/gqlDefaultAuth.guard";
 // @ts-ignore
-import * as gqlACGuard from "../../auth/gqlAC.guard";
+import * as gqlACGuard from "../../../auth/gqlAC.guard";
 // @ts-ignore
-import { isRecordNotFoundError } from "../../prisma.util";
+import { isRecordNotFoundError } from "../../../prisma.util";
 // @ts-ignore
-import { MetaQueryPayload } from "../../util/MetaQueryPayload";
+import { MetaQueryPayload } from "../../../util/MetaQueryPayload";
 
 declare interface CREATE_INPUT {}
 declare interface WHERE_INPUT {}

@@ -1,10 +1,10 @@
 import { JwtService } from "@nestjs/jwt";
 import { mock } from "jest-mock-extended";
-import { TokenServiceBase } from "../../auth/base/token.service.base";
+import { TokenServiceBase } from "../../../auth/base/token.service.base";
 import {
   INVALID_PASSWORD_ERROR,
   INVALID_USERNAME_ERROR,
-} from "../../auth/constants";
+} from "../../../auth/constants";
 import { SIGN_TOKEN, VALID_CREDENTIALS, VALID_ID } from "./constants";
 
 describe("Testing the TokenServiceBase", () => {

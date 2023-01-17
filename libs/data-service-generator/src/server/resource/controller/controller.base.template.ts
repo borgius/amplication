@@ -2,15 +2,15 @@ import * as common from "@nestjs/common";
 import * as swagger from "@nestjs/swagger";
 import * as nestAccessControl from "nest-access-control";
 // @ts-ignore
-import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
+import * as defaultAuthGuard from "../../../auth/defaultAuth.guard";
 // @ts-ignore
-import { isRecordNotFoundError } from "../../prisma.util";
+import { isRecordNotFoundError } from "../../../prisma.util";
 // @ts-ignore
-import * as errors from "../../errors";
+import * as errors from "../../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 // @ts-ignore
-import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import { ApiNestedQuery } from "../../../decorators/api-nested-query.decorator";
 
 declare interface CREATE_INPUT {}
 declare interface WHERE_INPUT {}

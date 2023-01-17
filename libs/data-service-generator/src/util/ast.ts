@@ -19,7 +19,8 @@ There are other ways to to customize your code, see this doc to learn more
 https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
-  `;
+
+`;
 
 /**
  * Consolidate import declarations to a valid minimal representation

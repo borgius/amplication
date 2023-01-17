@@ -33,6 +33,7 @@ context.serverDirectories = {
   scriptsDirectory: "exampleScriptsDirectory",
   baseDirectory: "exampleBaseDirectory",
   authDirectory: "exampleAuthDirectory",
+  entitiesDirectory: "exampleEntitiesDirectory",
   messageBrokerDirectory: "ExampleMessageBrokerDirectory",
 };
 

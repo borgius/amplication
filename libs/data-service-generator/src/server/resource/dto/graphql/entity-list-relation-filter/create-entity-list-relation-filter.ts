@@ -1,6 +1,6 @@
 import { namedTypes, builders } from "ast-types";
 import { Entity, NamedClassDeclaration } from "@amplication/code-gen-types";
-import { readFile } from "@amplication/code-gen-utils";
+import { readFile, print } from "@amplication/code-gen-utils";
 import {
   getClassDeclarationById,
   interpolate,
@@ -20,6 +20,7 @@ export async function createEntityListRelationFilter(
     ID: id,
     WHERE_INPUT: whereInput.id,
   });
+  console.log(print(file).code);
 
   removeTSClassDeclares(file);
 

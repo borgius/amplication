@@ -78,7 +78,8 @@ export async function createAppModuleInternal({
     callExpression`${SERVE_STATIC_MODULE_ID}.forRootAsync({
       useClass: ${SERVE_STATIC_OPTIONS_SERVICE_ID}
     })`,
-    callExpression`${GRAPHQL_MODULE_ID}.forRootAsync({
+    callExpression`${GRAPHQL_MODULE_ID}.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
       useFactory: (configService) => {
         const playground = configService.get("GRAPHQL_PLAYGROUND");
         const introspection = configService.get("GRAPHQL_INTROSPECTION");
@@ -108,6 +109,7 @@ export async function createAppModuleInternal({
     importDeclaration`import { ${SERVE_STATIC_MODULE_ID} } from "@nestjs/serve-static"`,
     importDeclaration`import { ${SERVE_STATIC_OPTIONS_SERVICE_ID} } from "./serveStaticOptions.service"`,
     importDeclaration`import { ${GRAPHQL_MODULE_ID} } from "@nestjs/graphql"`,
+    importDeclaration`import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'`,
   ]);
   removeTSIgnoreComments(file);
   removeESLintComments(file);

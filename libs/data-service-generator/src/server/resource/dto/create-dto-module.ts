@@ -79,7 +79,7 @@ export const IMPORTABLE_NAMES: Record<string, namedTypes.Identifier[]> = {
     FIELD_ID,
   ],
   [SORT_ORDER_MODULE]: [SORT_ORDER_ID],
-  "../../types": [builders.identifier(INPUT_JSON_VALUE_KEY)],
+  "../../../types": [builders.identifier(INPUT_JSON_VALUE_KEY)],
   ...FILTERS_IMPORTABLE_NAMES,
 };
 
@@ -142,5 +142,5 @@ export function createDTOModulePath(
   dtoName: string
 ): string {
   const { serverDirectories } = DsgContext.getInstance;
-  return `${serverDirectories.srcDirectory}/${entityDirectory}/base/${dtoName}.ts`;
+  return `${serverDirectories.entitiesDirectory}/${entityDirectory}/base/${dtoName}.ts`;
 }

@@ -116,8 +116,8 @@ async function createServiceModule({
   template,
 }: CreateEntityServiceParams): Promise<Module[]> {
   const { serverDirectories } = DsgContext.getInstance;
-  const modulePath = `${serverDirectories.srcDirectory}/${entityName}/${entityName}.service.ts`;
-  const moduleBasePath = `${serverDirectories.srcDirectory}/${entityName}/base/${entityName}.service.base.ts`;
+  const modulePath = `${serverDirectories.entitiesDirectory}/${entityName}/${entityName}.service.ts`;
+  const moduleBasePath = `${serverDirectories.entitiesDirectory}/${entityName}/base/${entityName}.service.base.ts`;
 
   interpolate(template, templateMapping);
   removeTSClassDeclares(template);
@@ -189,7 +189,7 @@ async function createServiceBaseModule({
 }: CreateEntityServiceBaseParams): Promise<Module[]> {
   const { serverDirectories } = DsgContext.getInstance;
 
-  const moduleBasePath = `${serverDirectories.srcDirectory}/${entityName}/base/${entityName}.service.base.ts`;
+  const moduleBasePath = `${serverDirectories.entitiesDirectory}/${entityName}/base/${entityName}.service.base.ts`;
 
   interpolate(template, templateMapping);
 

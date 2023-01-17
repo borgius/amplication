@@ -2,9 +2,9 @@ import * as common from "@nestjs/common";
 import * as graphql from "@nestjs/graphql";
 import * as nestAccessControl from "nest-access-control";
 // @ts-ignore
-import * as gqlUserRoles from "../auth/gqlUserRoles.decorator";
+import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 // @ts-ignore
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
+import { AclFilterResponseInterceptor } from "../../../interceptors/aclFilterResponse.interceptor";
 
 declare interface ENTITY {
   id: string;

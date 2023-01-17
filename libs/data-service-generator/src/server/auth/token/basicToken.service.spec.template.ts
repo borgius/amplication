@@ -1,8 +1,8 @@
-import { TokenServiceBase } from "../../auth/base/token.service.base";
+import { TokenServiceBase } from "../../../auth/base/token.service.base";
 import {
   INVALID_USERNAME_ERROR,
   INVALID_PASSWORD_ERROR,
-} from "../../auth/constants";
+} from "../../../auth/constants";
 import { SIGN_TOKEN, VALID_CREDENTIALS, VALID_ID } from "./constants";
 
 describe("Testing the TokenServiceBase", () => {

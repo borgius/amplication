@@ -44,6 +44,12 @@
       "@amplication/nest-logger-module/*": [
         "packages/amplication-nest-logger-module/src/*"
       ],
+      "@amplication/plugin-auth-basic": [
+        "libs/plugins/plugins/auth-basic/src/index.ts"
+      ],
+      "@amplication/plugin-auth-jwt": [
+        "libs/plugins/plugins/auth-jwt/src/index.ts"
+      ],
       "@amplication/prisma-db": ["packages/amplication-prisma-db/src/index.ts"],
       "@amplication/prisma-db/*": ["packages/amplication-prisma-db/src/*"],
       "@amplication/util/nestjs/kafka": ["libs/util/nestjs/kafka/src/index.ts"],

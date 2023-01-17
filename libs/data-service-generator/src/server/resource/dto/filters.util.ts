@@ -20,7 +20,7 @@ export const SCALAR_FILTER_TO_MODULE_AND_TYPE = Object.fromEntries(
     return [
       filter,
       {
-        module: `../../util/${filter}Filter`,
+        module: `../../../util/${filter}Filter`,
         type: builders.identifier(`${filter}Filter`),
       },
     ];

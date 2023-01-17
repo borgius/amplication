@@ -1,0 +1,3 @@
+[submodule "libs/plugins"]
+	path = libs/plugins
+	url = https://github.com/borgius/amplication-plugins.git

@@ -2,7 +2,7 @@ import * as common from "@nestjs/common";
 import * as graphql from "@nestjs/graphql";
 import * as nestAccessControl from "nest-access-control";
 // @ts-ignore
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
+import { AclFilterResponseInterceptor } from "../../../interceptors/aclFilterResponse.interceptor";
 
 declare interface RELATED_ENTITY_WHERE_INPUT {}
 

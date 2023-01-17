@@ -5,22 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Server",
+      "port": 59229,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Generator",
+      "port": 59329,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
       "name": "Attach by Process ID",
       "processId": "${command:PickProcess}",
-      "request": "attach",
-      "skipFiles": ["<node_internals>/**"],
-      "type": "node"
-    },
-    {
-      "name": "Attach to Server",
-      "port": 9229,
-      "request": "attach",
-      "skipFiles": ["<node_internals>/**"],
-      "type": "node"
-    },
-    {
-      "name": "Attach to Generator",
-      "port": 9429,
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"

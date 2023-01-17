@@ -1,6 +1,6 @@
 import { Field, InputType } from "@nestjs/graphql";
 //@ts-ignore
-import { SortOrder } from "../../util/SortOrder";
+import { SortOrder } from "../../../util/SortOrder";
 import { ApiProperty } from "@nestjs/swagger";
 
 @InputType({

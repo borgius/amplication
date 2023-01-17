@@ -9,11 +9,11 @@ export const IMPORTABLE_IDENTIFIERS_NAMES: Record<
   string,
   namedTypes.Identifier[]
 > = {
-  "../../decorators/public.decorator": [PUBLIC_ID],
-  "../../interceptors/aclFilterResponse.interceptor": [
+  "../../../decorators/public.decorator": [PUBLIC_ID],
+  "../../../interceptors/aclFilterResponse.interceptor": [
     builders.identifier(ACL_FILTER_RESPONSE_INTERCEPTOR_NAME),
   ],
-  "../../interceptors/aclValidateRequest.interceptor": [
+  "../../../interceptors/aclValidateRequest.interceptor": [
     builders.identifier(ACL_VALIDATE_REQUEST_INTERCEPTOR_NAME),
   ],
 };

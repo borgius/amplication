@@ -202,6 +202,7 @@ export type serverDirectories = {
   srcDirectory: string;
   authDirectory: string;
   scriptsDirectory: string;
+  entitiesDirectory: string;
   messageBrokerDirectory: string;
 };
 
