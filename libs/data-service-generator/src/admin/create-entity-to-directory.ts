@@ -9,7 +9,7 @@ export function createEntityToDirectory(
   return Object.fromEntries(
     entities.map((entity) => [
       entity.name,
-      `${clientDirectories.srcDirectory}/${camelCase(entity.name)}`,
+      `${clientDirectories.srcDirectory}/entities/${camelCase(entity.name)}`,
     ])
   );
 }

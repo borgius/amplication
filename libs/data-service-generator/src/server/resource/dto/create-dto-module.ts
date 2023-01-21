@@ -1,4 +1,5 @@
 import { print } from "@amplication/code-gen-utils";
+import { mapKeys } from "lodash";
 import { namedTypes, builders } from "ast-types";
 import { DeclarationKind } from "ast-types/gen/kinds";
 import { NamedClassDeclaration, Module } from "@amplication/code-gen-types";
@@ -111,10 +112,17 @@ export function createDTOFile(
       ? [dto, exportNames([dto.id])]
       : [builders.exportNamedDeclaration(dto)];
   const file = builders.file(builders.program(statements));
-  const moduleToIds = {
-    ...IMPORTABLE_NAMES,
-    ...getImportableDTOs(modulePath, dtoNameToPath),
-  };
+  const moduleToIds = mapKeys(
+    {
+      ...IMPORTABLE_NAMES,
+      ...getImportableDTOs(modulePath, dtoNameToPath),
+    },
+    (_, key) => {
+      if (modulePath.includes("admin/src/api"))
+        return key.replace("../../../", "../../");
+      else return key;
+    }
+  );
 
   addImports(file, importContainedIdentifiers(dto, moduleToIds));
 

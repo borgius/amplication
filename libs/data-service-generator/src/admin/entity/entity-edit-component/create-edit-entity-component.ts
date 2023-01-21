@@ -26,7 +26,7 @@ import {
 } from "../react-admin.util";
 import DsgContext from "../../../dsg-context";
 const IMPORTABLE_IDS = {
-  "../user/RolesOptions": [builders.identifier("ROLES_OPTIONS")],
+  "../../user/RolesOptions": [builders.identifier("ROLES_OPTIONS")],
   [REACT_ADMIN_MODULE]: REACT_ADMIN_COMPONENTS_ID,
 };
 const template = path.resolve(__dirname, "entity-edit-component.template.tsx");

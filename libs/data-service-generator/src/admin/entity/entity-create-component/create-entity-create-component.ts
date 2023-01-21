@@ -29,7 +29,7 @@ const template = path.resolve(
 );
 
 const IMPORTABLE_IDS = {
-  "../user/RolesOptions": [builders.identifier("ROLES_OPTIONS")],
+  "../../user/RolesOptions": [builders.identifier("ROLES_OPTIONS")],
   [REACT_ADMIN_MODULE]: REACT_ADMIN_COMPONENTS_ID,
 };
 

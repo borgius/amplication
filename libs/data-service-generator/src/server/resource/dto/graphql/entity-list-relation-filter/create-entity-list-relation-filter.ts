@@ -20,7 +20,6 @@ export async function createEntityListRelationFilter(
     ID: id,
     WHERE_INPUT: whereInput.id,
   });
-  console.log(print(file).code);
 
   removeTSClassDeclares(file);
 
