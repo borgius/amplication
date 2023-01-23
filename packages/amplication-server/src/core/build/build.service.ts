@@ -306,10 +306,10 @@ export class BuildService {
     const git: SimpleGit = simpleGit(artifacts);
 
     if (status === EnumActionStepStatus.Success) {
-      // await git.add(".");
-      // await git.commit(build.message || "Update Entities", ["--no-verify"]);
-      // await git.checkout(lastBranch);
-      // await git.merge([ampBranch]);
+      await git.add(".");
+      await git.commit(build.message || "Update Entities", ["--no-verify"]);
+      await git.checkout(lastBranch);
+      await git.merge([ampBranch]);
     } else {
       //
     }
@@ -376,8 +376,8 @@ export class BuildService {
             throw `Artifact folder not exists. It should be initialized git project. (${artifacts})`;
           const git: SimpleGit = simpleGit(artifacts);
           const gitStatus = await git.status();
-          // if (!gitStatus.isClean())
-          //   throw `Git status is not clear at destination folder: ${artifacts}`;
+          if (!gitStatus.isClean())
+            throw `Git status is not clear at destination folder: ${artifacts}`;
 
           // status.current
           const { branches } = await git.branchLocal();
@@ -482,27 +482,27 @@ export class BuildService {
     const serviceSettings =
       resource.resourceType === EnumResourceType.Service
         ? await this.serviceSettingsService.getServiceSettingsValues(
-            {
-              where: { id: resourceId },
-            },
-            user
-          )
+          {
+            where: { id: resourceId },
+          },
+          user
+        )
         : undefined;
 
     const otherResources = rootGeneration
       ? await Promise.all(
-          resources
-            .filter(({ id }) => id !== resourceId)
-            .map((resource) =>
-              this.getDSGResourceData(
-                resource.id,
-                buildId,
-                buildVersion,
-                user,
-                false
-              )
+        resources
+          .filter(({ id }) => id !== resourceId)
+          .map((resource) =>
+            this.getDSGResourceData(
+              resource.id,
+              buildId,
+              buildVersion,
+              user,
+              false
             )
-        )
+          )
+      )
       : undefined;
 
     return {

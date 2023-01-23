@@ -1,25 +1,31 @@
 import { useTracking } from "../util/analytics";
 import { AnalyticsEventNames } from "../util/analytics-events.types";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import * as models from "../models";
 import {
   Button,
   EnumButtonStyle,
   EnumIconPosition,
   Modal,
 } from "@amplication/design-system";
-import axios from "axios";
-import { REACT_APP_SERVER_URI } from "../env";
 import "./PurchasePage.scss";
 import { useContext } from "react";
 import { AppContext } from "../context/appContext";
 import { PromoBanner } from "./PromoBanner";
+import { ApolloError, useMutation } from "@apollo/client";
+import { PROVISION_SUBSCRIPTION } from "../Workspaces/queries/workspaceQueries";
+
+export type DType = {
+  provisionSubscription: models.ProvisionSubscriptionResult;
+};
 
 const selectedPlanAction = {
   "plan-amplication-enterprise": (
     props,
     purchaseWorkspace,
     selectedBillingPeriod,
-    intentionType
+    intentionType,
+    provisionSubscription
   ) => {
     window.open(
       "mailto:sales@amplication.com?subject=Enterprise Plan Inquiry",
@@ -31,24 +37,21 @@ const selectedPlanAction = {
     props,
     purchaseWorkspace,
     selectedBillingPeriod,
-    intentionType
+    intentionType,
+    provisionSubscription
   ) => {
-    const resp = await axios.post(
-      `${REACT_APP_SERVER_URI}/billing/provisionSubscription`,
-      {
-        workspaceId: purchaseWorkspace.id,
-        planId: "plan-amplication-pro",
-        billingPeriod: selectedBillingPeriod,
-        intentionType,
-        successUrl: props.location.state.from.pathname,
-        cancelUrl: props.location.state.from.pathname,
-      }
-    );
-
-    const checkoutResult = resp.data;
-    if (checkoutResult.provisionStatus === "PaymentRequired") {
-      window.location.href = checkoutResult.checkoutUrl;
-    }
+    provisionSubscription({
+      variables: {
+        data: {
+          workspaceId: purchaseWorkspace.id,
+          planId: "plan-amplication-pro",
+          billingPeriod: selectedBillingPeriod,
+          intentionType,
+          successUrl: props.location.state.from.pathname,
+          cancelUrl: props.location.state.from.pathname,
+        },
+      },
+    });
   },
 };
 
@@ -64,6 +67,17 @@ const PurchasePage = (props) => {
     history.action !== "POP" ? history.goBack() : history.push("/");
   };
   const { currentWorkspace } = useContext(AppContext);
+  const [provisionSubscription, { loading: provisionSubscriptionLoading }] =
+    useMutation<DType>(PROVISION_SUBSCRIPTION, {
+      onCompleted: (data) => {
+        const { provisionStatus, checkoutUrl } = data.provisionSubscription;
+        if (provisionStatus === "PaymentRequired")
+          window.location.href = checkoutUrl;
+      },
+      onError: (error: ApolloError) => {
+        console.log(error);
+      },
+    });
 
   return (
     <Modal open fullScreen>
@@ -91,8 +105,12 @@ const PurchasePage = (props) => {
                 : `All core backend functionality:`;
             },
             planCTAButton: {
-              startNew: "Upgrade now",
-              upgrade: "Upgrade now",
+              startNew: provisionSubscriptionLoading
+                ? "...Loading"
+                : "Upgrade now",
+              upgrade: provisionSubscriptionLoading
+                ? "...Loading"
+                : "Upgrade now",
               custom: "Contact us",
             },
             price: {
@@ -126,7 +144,8 @@ const PurchasePage = (props) => {
               props,
               currentWorkspace,
               selectedBillingPeriod,
-              intentionType
+              intentionType,
+              provisionSubscription
             );
           }}
         /> */}
@@ -150,6 +169,25 @@ const PurchasePage = (props) => {
               Contact us
             </a>
           </Button>
+        </div>
+        <div className={`${CLASS_NAME}__footer`}>
+          <div className={`${CLASS_NAME}__footer__copyright`}>
+            ©2022 amplication
+          </div>
+          <div className={`${CLASS_NAME}__footer__links`}>
+            <a
+              href="https://amplication.com/privacy-policy"
+              className={`${CLASS_NAME}__footer__links__privacy`}
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="https://amplication.com/terms"
+              className={`${CLASS_NAME}__footer__links__terms`}
+            >
+              Terms & Conditions
+            </a>
+          </div>
         </div>
       </div>
     </Modal>

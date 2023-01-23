@@ -1,5 +1,5 @@
 import { CircularProgress } from "@amplication/design-system";
-import React, { lazy } from "react";
+import React, { lazy, useState } from "react";
 import { isMobileOnly } from "react-device-detect";
 import { match } from "react-router-dom";
 import { useTracking } from "react-tracking";
@@ -9,6 +9,7 @@ import ScreenResolutionMessage from "../Layout/ScreenResolutionMessage";
 import ProjectEmptyState from "../Project/ProjectEmptyState";
 import { AppRouteProps } from "../routes/routesUtil";
 import CompleteInvitation from "../User/CompleteInvitation";
+import { AnalyticsEventNames } from "../util/analytics-events.types";
 import LastCommit from "../VersionControl/LastCommit";
 import PendingChanges from "../VersionControl/PendingChanges";
 import usePendingChanges, {
@@ -34,6 +35,8 @@ type Props = AppRouteProps & {
 };
 
 const WorkspaceLayout: React.FC<Props> = ({ innerRoutes, moduleClass }) => {
+  const [chatStatus, setChatStatus] = useState<boolean>(false);
+  const { trackEvent } = useTracking();
   const authenticated = useAuthenticated();
   const {
     currentWorkspace,
@@ -91,6 +94,21 @@ const WorkspaceLayout: React.FC<Props> = ({ innerRoutes, moduleClass }) => {
     resourceId: currentResource?.id,
   });
 
+  const openHubSpotChat = () => {
+    const status = window.HubSpotConversations.widget.status();
+
+    if (status.loaded) {
+      window.HubSpotConversations.widget.refresh();
+    } else {
+      window.HubSpotConversations.widget.load();
+    }
+    trackEvent({
+      eventName: AnalyticsEventNames.ChatWidgetView,
+      workspaceId: currentWorkspace.id,
+    });
+    setChatStatus(true);
+  };
+
   return currentWorkspace ? (
     <AppContextProvider
       newVal={{
@@ -133,6 +151,7 @@ const WorkspaceLayout: React.FC<Props> = ({ innerRoutes, moduleClass }) => {
         loadingCreateMessageBroker,
         resetPendingChangesIndicator,
         setResetPendingChangesIndicator,
+        openHubSpotChat,
       }}
     >
       {isMobileOnly ? (

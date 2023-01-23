@@ -228,6 +228,9 @@ describe("ProjectService", () => {
             getNumericEntitlement: jest.fn(() => {
               return {};
             }),
+            reportUsage: jest.fn(() => {
+              return {};
+            }),
           },
         },
         {
@@ -246,6 +249,9 @@ describe("ProjectService", () => {
             project: {
               findMany: jest.fn(() => {
                 return [EXAMPLE_PROJECT];
+              }),
+              findFirst: jest.fn(() => {
+                return EXAMPLE_PROJECT;
               }),
             },
           })),
