@@ -37,6 +37,7 @@ import {
 } from "@amplication/nest-logger-module";
 import { BillingService } from "../billing/billing.service";
 import { ProjectConfigurationSettingsService } from "../projectConfigurationSettings/projectConfigurationSettings.service";
+import { arrayAllIncluded } from "../../util/array";
 
 export const HOST_VAR = "HOST";
 export const CLIENT_HOST_VAR = "CLIENT_HOST";
@@ -306,10 +307,26 @@ export class BuildService {
     const git: SimpleGit = simpleGit(artifacts);
 
     if (status === EnumActionStepStatus.Success) {
-      await git.add(".");
-      await git.commit(build.message || "Update Entities", ["--no-verify"]);
-      await git.checkout(lastBranch);
-      await git.merge([ampBranch]);
+      const status = await git.status();
+      const diff = await git.diff();
+      let onlyVersion = false;
+      if (
+        arrayAllIncluded(status.modified, [`.${ampBranch}.json`, "swagger.ts"])
+      ) {
+        onlyVersion = diff
+          .split("\n")
+          .filter((line) => line.startsWith("+ "))
+          .every((line) => line.match(/version|currentBrach/i));
+      }
+      if (onlyVersion) {
+        await git.reset(["--hard"]);
+        await git.checkout(lastBranch);
+      } else {
+        await git.add(".");
+        await git.commit(build.message || "Update Entities", ["--no-verify"]);
+        await git.checkout(lastBranch);
+        await git.merge([ampBranch]);
+      }
     } else {
       //
     }
