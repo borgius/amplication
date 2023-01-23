@@ -108,14 +108,20 @@ export function createDTOFile(
 ): namedTypes.File {
   const statements =
     namedTypes.ClassDeclaration.check(dto) &&
-      namedTypes.Identifier.check(dto.id)
+    namedTypes.Identifier.check(dto.id)
       ? [dto, exportNames([dto.id])]
       : [builders.exportNamedDeclaration(dto)];
   const file = builders.file(builders.program(statements));
-  const moduleToIds = mapKeys({
-    ...IMPORTABLE_NAMES,
-    ...getImportableDTOs(modulePath, dtoNameToPath),
-  }, (module, key) => modulePath.includes('admin/src/api') ? key.replace('../../../', '../../') : key);
+  const moduleToIds = mapKeys(
+    {
+      ...IMPORTABLE_NAMES,
+      ...getImportableDTOs(modulePath, dtoNameToPath),
+    },
+    (module, key) =>
+      modulePath.includes("admin/src/api")
+        ? key.replace("../../../", "../../")
+        : key
+  );
 
   addImports(file, importContainedIdentifiers(dto, moduleToIds));
 

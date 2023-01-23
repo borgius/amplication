@@ -12,7 +12,10 @@ import Stigg, {
   ProvisionSubscriptionResult,
   ReportUsageAck,
 } from "@stigg/node-server-sdk";
-import { BillingPeriod, SubscriptionStatus } from "@stigg/node-server-sdk/dist/api/generated/types";
+import {
+  BillingPeriod,
+  SubscriptionStatus,
+} from "@stigg/node-server-sdk/dist/api/generated/types";
 import { EnumSubscriptionPlan, SubscriptionData } from "../subscription/dto";
 import { EnumSubscriptionStatus } from "../subscription/dto/EnumSubscriptionStatus";
 import { Subscription } from "../subscription/dto/Subscription";
@@ -38,11 +41,11 @@ export class BillingService {
     private readonly logger: AmplicationLogger,
     private readonly analytics: SegmentAnalyticsService,
     configService: ConfigService
-  ) { }
+  ) {}
 
   async getStiggClient() {
     return {
-      async provisionCustomer(cust) { },
+      async provisionCustomer(cust) {},
     };
   }
 

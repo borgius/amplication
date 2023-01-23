@@ -482,27 +482,27 @@ export class BuildService {
     const serviceSettings =
       resource.resourceType === EnumResourceType.Service
         ? await this.serviceSettingsService.getServiceSettingsValues(
-          {
-            where: { id: resourceId },
-          },
-          user
-        )
+            {
+              where: { id: resourceId },
+            },
+            user
+          )
         : undefined;
 
     const otherResources = rootGeneration
       ? await Promise.all(
-        resources
-          .filter(({ id }) => id !== resourceId)
-          .map((resource) =>
-            this.getDSGResourceData(
-              resource.id,
-              buildId,
-              buildVersion,
-              user,
-              false
+          resources
+            .filter(({ id }) => id !== resourceId)
+            .map((resource) =>
+              this.getDSGResourceData(
+                resource.id,
+                buildId,
+                buildVersion,
+                user,
+                false
+              )
             )
-          )
-      )
+        )
       : undefined;
 
     return {
