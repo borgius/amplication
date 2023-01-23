@@ -1,5 +1,5 @@
 import { CircularProgress } from "@amplication/design-system";
-import React, { lazy, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { isMobileOnly } from "react-device-detect";
 import { match } from "react-router-dom";
 import { useTracking } from "react-tracking";
@@ -108,6 +108,15 @@ const WorkspaceLayout: React.FC<Props> = ({ innerRoutes, moduleClass }) => {
     });
     setChatStatus(true);
   };
+
+  useEffect(() => {
+    if (currentWorkspace) {
+      trackEvent({
+        eventName: AnalyticsEventNames.WorkspaceSelected,
+        workspaceId: currentWorkspace.id,
+      });
+    }
+  }, [currentWorkspace]);
 
   return currentWorkspace ? (
     <AppContextProvider
