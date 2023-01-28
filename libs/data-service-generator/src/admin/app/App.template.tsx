@@ -1,5 +1,6 @@
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Admin, DataProvider, Resource } from "react-admin";
+import { Admin, DataProvider, defaultTheme, Resource } from "react-admin";
 //@ts-ignore
 import buildGraphQLProvider from "./data-provider/graphqlDataProvider";
 //@ts-ignore
@@ -30,16 +31,20 @@ const App = (): React.ReactElement => {
   }
   return (
     <div className="App">
-      <Admin
-        title={RESOURCE_NAME}
-        dataProvider={dataProvider}
-        authProvider={AUTH_PROVIDER_NAME}
-        theme={theme}
-        dashboard={Dashboard}
-        loginPage={Login}
-      >
-        {RESOURCES}
-      </Admin>
+      <ThemeProvider theme={createTheme(defaultTheme)}>
+        <CssBaseline />
+
+        <Admin
+          title={RESOURCE_NAME}
+          dataProvider={dataProvider}
+          authProvider={AUTH_PROVIDER_NAME}
+          theme={theme}
+          dashboard={Dashboard}
+          loginPage={Login}
+        >
+          {RESOURCES}
+        </Admin>
+      </ThemeProvider>
     </div>
   );
 };

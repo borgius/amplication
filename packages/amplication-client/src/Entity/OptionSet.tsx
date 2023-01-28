@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FieldArray, FieldArrayRenderProps, getIn } from "formik";
-import { camelCase } from "change-case";
+import { pascalCase } from "pascal-case";
 import { get } from "lodash";
 
 import { Button, EnumButtonStyle } from "../Components/Button";
 import { TextField, Icon } from "@amplication/design-system";
 import "./OptionSet.scss";
+import { optionsTemplates } from "./OptionsSetTemplates";
 
 type OptionItem = {
   value: string;
@@ -39,6 +40,7 @@ const OptionSetOptions = ({
   name,
   remove,
   replace,
+  push: formikPush,
   label,
 }: {
   label: string;
@@ -53,10 +55,18 @@ const OptionSetOptions = ({
   }, [form.errors, name]);
 
   const options = hasNew ? [...value, {}] : value;
+  const selectTemplate = (name) => {
+    Object.entries(optionsTemplates[name]).forEach(([value, label]) => {
+      formikPush({ label, value });
+    });
+  };
 
   return (
     <div>
-      <h3>{label}</h3>
+      <h3>
+        {label} <OptionTemplates onSelect={selectTemplate} />
+      </h3>
+
       {errors && <div className="option-set__error-message">{errors}</div>}
       {options.map((option: OptionItem, index: number) => (
         <OptionSetOption
@@ -118,7 +128,7 @@ const OptionSetOption = ({
   const handleLabelChange = useCallback(
     (event) => {
       const label = event.target.value;
-      const newValue = camelCase(event.target.value);
+      const newValue = pascalCase(event.target.value);
       const option = { label: label, value: newValue };
       onChange(index, option);
     },
@@ -147,5 +157,21 @@ const OptionSetOption = ({
         />
       </div>
     </div>
+  );
+};
+
+const OptionTemplates = ({ onSelect }) => {
+  const handleChange = (event) => {
+    onSelect(event.target.value);
+    event.target.value = "";
+  };
+
+  return (
+    <select onChange={handleChange}>
+      <option value="">Copy from template</option>
+      {Object.keys(optionsTemplates).map((key) => (
+        <option>{key}</option>
+      ))}
+    </select>
   );
 };

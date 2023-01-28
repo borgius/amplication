@@ -1,4 +1,5 @@
 import { join } from "path";
+import { execSync } from "child_process";
 import { Inject, Injectable, forwardRef } from "@nestjs/common";
 import axios from "axios";
 import { existsSync, promises as fs } from "fs";
@@ -325,7 +326,8 @@ export class BuildService {
         await git.add(".");
         await git.commit(build.message || "Update Entities", ["--no-verify"]);
         await git.checkout(lastBranch);
-        await git.merge([ampBranch]);
+        await git.merge([ampBranch, "--no-commit", "--no-ff"]);
+        execSync("yarn prisma:generate", { cwd: artifacts });
       }
     } else {
       //

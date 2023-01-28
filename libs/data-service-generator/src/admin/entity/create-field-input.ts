@@ -78,7 +78,7 @@ const DATA_TYPE_TO_FIELD_INPUT: {
       label="${field.displayName}"
       choices={${JSON.stringify(optionSetField.properties.options)}}
       optionText="label"
-      ${!field.required ? "allowEmpty" : ""}
+      ${field.required ? "validate={[required()]}" : ""}
       optionValue="value"/>`;
   },
   [EnumDataType.Boolean]: (field) =>
