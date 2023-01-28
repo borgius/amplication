@@ -9,7 +9,7 @@ import {
   Modal,
 } from "@amplication/design-system";
 import "./PurchasePage.scss";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { AppContext } from "../context/appContext";
 import { PromoBanner } from "./PromoBanner";
 import { ApolloError, useMutation } from "@apollo/client";
@@ -47,8 +47,8 @@ const selectedPlanAction = {
           planId: "plan-amplication-pro",
           billingPeriod: selectedBillingPeriod,
           intentionType,
-          successUrl: props.location.state.from.pathname,
-          cancelUrl: props.location.state.from.pathname,
+          successUrl: props.location.state?.from?.pathname,
+          cancelUrl: props.location.state?.from?.pathname,
         },
       },
     });

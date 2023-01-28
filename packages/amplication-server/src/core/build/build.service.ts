@@ -327,7 +327,9 @@ export class BuildService {
         await git.commit(build.message || "Update Entities", ["--no-verify"]);
         await git.checkout(lastBranch);
         await git.merge([ampBranch, "--no-commit", "--no-ff"]);
-        execSync("yarn prisma:generate", { cwd: artifacts });
+        execSync("yarn prisma:generate", {
+          cwd: `${artifacts}/${dsgContext.resourceInfo.settings.serverSettings.serverPath}`,
+        });
       }
     } else {
       //
