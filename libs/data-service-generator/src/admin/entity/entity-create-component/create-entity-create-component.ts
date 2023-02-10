@@ -39,50 +39,19 @@ export async function createEntityCreateComponent(
   entityToTitleComponent: Record<string, EntityComponent>
 ): Promise<EntityComponent> {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { DTOs } = DsgContext.getInstance;
   const file = await readFile(template);
   const name = `${entity.name}Create`;
+  const formName = `${entity.name}Form`;
   const modulePath = `${entityToDirectory[entity.name]}/${name}.tsx`;
-  const dto = DTOs[entity.name].createInput;
-  const dtoProperties = dto.body.body.filter(
-    (
-      member
-    ): member is namedTypes.ClassProperty & { key: namedTypes.Identifier } =>
-      namedTypes.ClassProperty.check(member) &&
-      namedTypes.Identifier.check(member.key)
-  );
-  const fieldsByName = Object.fromEntries(
-    entity.fields.map((field) => [field.name, field])
-  );
-  const fields = dtoProperties.map(
-    (property) => fieldsByName[property.key.name]
-  );
-  const relationFields: EntityField[] = fields.filter(
-    (field) => field.dataType === EnumDataType.Lookup
-  );
 
   interpolate(file, {
     COMPONENT_NAME: builders.identifier(name),
-    INPUTS: jsxFragment`<>${
-      isEmpty(fields)
-        ? "<div/>" //create an empty div if no fields exist - <SimpleForm> {children} must not be empty
-        : fields.map((field) => createFieldInput(field))
-    }</>`,
+    COMPONENT_FORM: builders.identifier(formName),
   });
 
-  // Add imports for entities title components
-  addImports(
-    file,
-    relationFields.map((field) => {
-      const { relatedEntity } = field.properties as LookupResolvedProperties;
-      const relatedEntityTitleComponent =
-        entityToTitleComponent[relatedEntity.name];
-      return importNames(
-        [builders.identifier(relatedEntityTitleComponent.name)],
-        relativeImportPath(modulePath, relatedEntityTitleComponent.modulePath)
-      );
-    })
-  );
+  addImports(file, [
+    importNames([builders.identifier(formName)], `./${formName}`),
+  ]);
 
   addImports(file, [...importContainedIdentifiers(file, IMPORTABLE_IDS)]);
 

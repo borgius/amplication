@@ -1,12 +1,10 @@
 import * as React from "react";
-import { Create, SimpleForm, CreateProps } from "react-admin";
-
-declare const INPUTS: React.ReactElement[];
+import { Create, CreateProps } from "react-admin";
 
 export const COMPONENT_NAME = (props: CreateProps): React.ReactElement => {
   return (
     <Create {...props}>
-      <SimpleForm>{INPUTS}</SimpleForm>
+      <COMPONENT_FORM />
     </Create>
   );
 };

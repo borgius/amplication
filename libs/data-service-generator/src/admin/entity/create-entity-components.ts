@@ -4,6 +4,7 @@ import { createEntityCreateComponent } from "./entity-create-component/create-en
 import { createEntityListComponent } from "./entity-list-component/create-entity-list-component";
 import { createEditEntityComponent } from "./entity-edit-component/create-edit-entity-component";
 import { createEntityShowComponent } from "./entity-show-component/create-entity-show-component";
+import { createEntityFormComponent } from "./entity-form-component/create-entity-form-component";
 
 export async function createEntityComponents(
   entity: Entity,
@@ -32,6 +33,11 @@ export async function createEntityComponents(
       entityToDirectory,
       entityToTitleComponent,
       entityNameToEntity
+    ),
+    createEntityFormComponent(
+      entity,
+      entityToDirectory,
+      entityToTitleComponent
     ),
   ]);
 
