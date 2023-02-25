@@ -24,7 +24,13 @@
     },
     {
       "label": "Start",
-      "dependsOn": ["Docker", "Server", "Client", "Generator-runner"],
+      "dependsOn": [
+        "Docker",
+        "Server",
+        "Client",
+        "Generator-runner",
+        "Plugin-api"
+      ],
       "problemMatcher": []
     },
     {
@@ -48,9 +54,18 @@
       "label": "Generator-runner",
       "type": "shell",
       "command": "fkill :53002 -f -s; npm run serve",
-      "detail": "Inspect:9429",
       "options": {
         "cwd": "${workspaceRoot}/packages/amplication-data-service-generator-runner"
+      },
+      "problemMatcher": ["$webpack-builder"],
+      "dependsOn": ["DB Connection"]
+    },
+    {
+      "label": "Plugin-api",
+      "type": "shell",
+      "command": "fkill :53003 -f -s; npm run serve",
+      "options": {
+        "cwd": "${workspaceRoot}/packages/amplication-plugin-api"
       },
       "problemMatcher": ["$webpack-builder"],
       "dependsOn": ["DB Connection"]

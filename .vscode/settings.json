@@ -97,6 +97,13 @@
     {
       "label": "Generator",
       "task": "Generator-runner"
+    },
+    {
+      "label": "Plugin",
+      "task": "Plugin-api"
     }
-  ]
+  ],
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

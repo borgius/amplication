@@ -36,7 +36,6 @@ type Props = AppRouteProps & {
 
 const WorkspaceLayout: React.FC<Props> = ({ innerRoutes, moduleClass }) => {
   const [chatStatus, setChatStatus] = useState<boolean>(false);
-  const { trackEvent } = useTracking();
   const authenticated = useAuthenticated();
   const {
     currentWorkspace,
@@ -88,7 +87,7 @@ const WorkspaceLayout: React.FC<Props> = ({ innerRoutes, moduleClass }) => {
     loadingCreateMessageBroker,
   } = useResources(currentWorkspace, currentProject, addBlock, addEntity);
 
-  const { Track } = useTracking({
+  const { trackEvent, Track } = useTracking<{ [key: string]: any }>({
     workspaceId: currentWorkspace?.id,
     projectId: currentProject?.id,
     resourceId: currentResource?.id,

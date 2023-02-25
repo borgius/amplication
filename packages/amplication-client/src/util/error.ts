@@ -16,8 +16,8 @@ export function formatError(
     }
   }
 
-  if (error instanceof AxiosError) {
-    return (error as AxiosError).message;
+  if (error?.message) {
+    return error.message;
   }
   return String(error);
 }

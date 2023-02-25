@@ -1,3 +1,4 @@
+import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
 import { Module, OnApplicationShutdown } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { GraphQLModule } from "@nestjs/graphql";
@@ -33,7 +34,8 @@ import { SERVICE_NAME } from "./constants";
       metadata: { service: SERVICE_NAME },
     }),
 
-    GraphQLModule.forRootAsync({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
       useFactory: async (configService: ConfigService) => {
         return {
           autoSchemaFile:

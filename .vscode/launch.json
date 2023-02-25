@@ -13,6 +13,13 @@
     },
     {
       "name": "Generator",
+      "port": 59129,
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Plugin",
       "port": 59329,
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
@@ -38,7 +45,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3001",
+      "url": "http://localhost:53001",
       "webRoot": "${workspaceFolder}/amplication-client"
     },
     {

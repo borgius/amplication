@@ -11,7 +11,7 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2019", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -41,14 +41,25 @@
       "@amplication/nest-logger-module/*": [
         "packages/amplication-nest-logger-module/src/*"
       ],
+      "@amplication/plugin-api": [
+        "packages/amplication-plugin-api/src/index.ts"
+      ],
+      "@amplication/plugin-api/*": ["packages/amplication-plugin-api/src/*"],
       "@amplication/plugin-auth-basic": [
         "libs/plugins/plugins/auth-basic/src/index.ts"
+      ],
+      "@amplication/plugin-auth-core": [
+        "libs/plugins/plugins/auth-core/src/index.ts"
       ],
       "@amplication/plugin-auth-jwt": [
         "libs/plugins/plugins/auth-jwt/src/index.ts"
       ],
-      "@amplication/prisma-db": ["packages/amplication-prisma-db/src/index.ts"],
-      "@amplication/prisma-db/*": ["packages/amplication-prisma-db/src/*"],
+      "@amplication/prisma-db": [
+        "packages/amplication-prisma-db/prisma/generated-prisma-client"
+      ],
+      "@amplication/prisma-db/*": [
+        "packages/amplication-prisma-db/prisma/generated-prisma-client/*"
+      ],
       "@amplication/util/kafka": ["libs/util/kafka/src/index.ts"],
       "@amplication/util/nestjs/kafka": ["libs/util/nestjs/kafka/src/index.ts"],
       "@primer/react/deprecated": ["node_modules/@primer/react/lib/deprecated"]

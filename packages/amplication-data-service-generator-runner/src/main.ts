@@ -1,15 +1,13 @@
+import { AMPLICATION_MODULES } from "./constants";
 import { DSGResourceData, Module } from "@amplication/code-gen-types";
-import {
-  createDataService,
-  defaultLogger,
-  httpClient,
-} from "@amplication/data-service-generator";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
+import { createDataService } from "./create-data-service";
 import { dynamicPackagesInstallations } from "./dynamic-package-installation";
-import { prepareDefaultPlugins } from "./utils/defaultPlugins";
+import { defaultLogger } from "./server/logging";
+import { httpClient } from "./utils/http-client";
+import { prepareDefaultPlugins } from "./utils/dynamic-installation/defaultPlugins";
 
-export const AMPLICATION_MODULES = "amplication_modules";
 const buildSpecPath = process.env.BUILD_SPEC_PATH;
 const buildOutputPath = process.env.BUILD_OUTPUT_PATH;
 
@@ -43,7 +41,7 @@ export default async function generateCode(
     await dynamicPackagesInstallations(allPlugins, defaultLogger);
 
     const modules = await createDataService(
-      resourceData,
+      { ...resourceData, pluginInstallations: allPlugins },
       defaultLogger,
       join(__dirname, "..", AMPLICATION_MODULES)
     );

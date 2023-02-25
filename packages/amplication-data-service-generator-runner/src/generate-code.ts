@@ -1,11 +1,12 @@
+import { AMPLICATION_MODULES } from "./constants";
 import { DSGResourceData, Module } from "@amplication/code-gen-types";
-import {
-  createDataService,
-  defaultLogger,
-  httpClient,
-} from "@amplication/data-service-generator";
 import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
+import { createDataService } from "./create-data-service";
+import { dynamicPackagesInstallations } from "./dynamic-package-installation";
+import { defaultLogger } from "./server/logging";
+import { prepareDefaultPlugins } from "./utils/dynamic-installation/defaultPlugins";
+import { httpClient } from "./utils/http-client";
 
 export const readInputJson = async (
   filePath: string
@@ -37,8 +38,18 @@ export const generateCode = async (
 ): Promise<void> => {
   try {
     const resourceData = await readInputJson(source);
+    const { pluginInstallations } = resourceData;
 
-    const modules = await createDataService(resourceData, defaultLogger);
+    const allPlugins = prepareDefaultPlugins(pluginInstallations);
+
+    await dynamicPackagesInstallations(allPlugins, defaultLogger);
+
+    const modules = await createDataService(
+      { ...resourceData, pluginInstallations: allPlugins },
+      defaultLogger,
+      join(__dirname, "..", AMPLICATION_MODULES)
+    );
+
     await writeModules(modules, destination);
     console.log("Code generation completed successfully");
     await httpClient.post(
