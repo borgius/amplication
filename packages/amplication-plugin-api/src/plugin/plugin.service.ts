@@ -39,7 +39,9 @@ export class PluginService extends PluginServiceBase {
    */
   async githubCatalogPlugins() {
     try {
-      const pluginsList = await this.gitPluginService.getPlugins();
+      let pluginsList = await this.gitPluginService.getLocalPlugins();
+      if (!pluginsList.length)
+        pluginsList = await this.gitPluginService.getPlugins();
       if (
         !pluginsList.length ||
         Object.prototype.toString.call(pluginsList) === "[object String]"

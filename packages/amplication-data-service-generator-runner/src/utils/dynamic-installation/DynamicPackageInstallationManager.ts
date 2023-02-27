@@ -1,3 +1,5 @@
+import { resolve } from "path";
+import { existsSync } from "fs";
 import { valid } from "semver";
 import type { Promisable } from "type-fest";
 import { Tarball } from "./Tarball";
@@ -19,11 +21,14 @@ export class DynamicPackageInstallationManager {
       onBeforeInstall && (await onBeforeInstall(plugin));
       const validVersion = valid(version);
 
-      const tarball = new Tarball(
-        { name, version: validVersion },
-        this.pluginInstallationPath
-      );
-      await tarball.download();
+      if (!existsSync(resolve(this.pluginInstallationPath, name))) {
+        const tarball = new Tarball(
+          { name, version: validVersion },
+          this.pluginInstallationPath
+        );
+        await tarball.download();
+      }
+
       onAfterInstall && (await onAfterInstall(plugin));
     } catch (error) {
       onError && (await onError(plugin));

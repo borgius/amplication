@@ -9,6 +9,7 @@ import { PluginService } from "./plugin.service";
 import { Public } from "../decorators/public.decorator";
 import { GraphQLError } from "graphql";
 import { PluginVersion } from "../pluginVersion/base/PluginVersion";
+import { PluginFindManyArgs } from "./base/PluginFindManyArgs";
 
 @graphql.Resolver(() => Plugin)
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
@@ -19,6 +20,17 @@ export class PluginResolver extends PluginResolverBase {
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {
     super(service, rolesBuilder);
+  }
+
+  @Public()
+  @graphql.Query(() => [Plugin])
+  async plugins(@graphql.Args() args: PluginFindManyArgs): Promise<Plugin[]> {
+    const plugins = await super.plugins(args);
+    if (plugins?.length > 0) {
+      return plugins;
+    } else {
+      return this.githubPlugins();
+    }
   }
 
   @Public()

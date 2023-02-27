@@ -1,9 +1,23 @@
+import { readFileSync } from "fs";
 import { Injectable } from "@nestjs/common";
 import { Plugin } from "../../prisma/generated-prisma-client";
 import fetch from "node-fetch";
 import yaml from "js-yaml";
+import glob from "glob";
 import { PluginList, PluginYml } from "./plugin.types";
-import { AMPLICATION_GITHUB_URL, emptyPlugin } from "./plugin.constants";
+import {
+  AMPLICATION_GITHUB_URL,
+  AMPLICATION_LOCAL_FOLDER,
+  emptyPlugin,
+} from "./plugin.constants";
+import { resolve } from "path";
+
+const asyncGlob = (pattern, options) =>
+  new Promise<string[]>((resolve, reject) => {
+    glob(pattern, options, (err, files) =>
+      err === null ? resolve(files) : reject(err)
+    );
+  });
 
 @Injectable()
 export class GitPluginService {
@@ -74,6 +88,47 @@ export class GitPluginService {
           npm: pluginConfig.npm,
           pluginId: pluginConfig.pluginId,
           website: pluginConfig.website,
+          updatedAt: currDate,
+        });
+      }
+
+      return pluginsArr;
+    } catch (error) {
+      /// return error from getPlugins
+      console.log(error);
+    }
+  }
+
+  /**
+   * main function that get local plugins
+   * @returns Plugin[]
+   */
+  async getLocalPlugins(): Promise<Plugin[]> {
+    try {
+      const packages: string[] = await asyncGlob("*/info.yml", {
+        cwd: AMPLICATION_LOCAL_FOLDER,
+      });
+      if (!packages) throw "Failed to load local plugin catalog";
+
+      const pluginsArr: Plugin[] = [];
+
+      for (const infoFile of packages) {
+        const fileYml = readFileSync(
+          resolve(AMPLICATION_LOCAL_FOLDER, infoFile),
+          "utf8"
+        );
+        const info: PluginYml = yaml.load(fileYml) as PluginYml;
+        const currDate = new Date();
+        pluginsArr.push({
+          id: "",
+          createdAt: currDate,
+          description: info.description,
+          github: info.github,
+          icon: info.icon,
+          name: info.name,
+          npm: info.npm,
+          pluginId: info.id,
+          website: info.website,
           updatedAt: currDate,
         });
       }
