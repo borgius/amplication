@@ -4,15 +4,22 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "3.6.9",
+    "@craco/craco": "^7.0.0",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "@mui/styles": "^5.11.2",
     "graphql": "15.6.1",
     "lodash": "4.17.21",
-    "pluralize": "8.0.0",
+    "pluralize": "^8.0.0",
+    "ra-compact-ui": "^2.0.0-beta",
+    "ra-core": "^4.8.1",
+    "ra-data-graphql": "^4.6.0",
     "ra-data-graphql-amplication": "0.0.13",
+    "ra-language-french": "^4.7.2",
+    "ra-language-russian": "^3.13.5",
+    "ra-language-spanish": "^1.0.0",
     "react": "^17.0.0",
-    "react-admin": "4.7.1",
+    "react-admin": "^4.7.4",
     "react-dom": "16.14.0",
     "react-scripts": "5.0.0",
     "sass": "^1.39.0",
@@ -24,10 +31,11 @@
     }
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "lint": "run-bin eslint --fix .",
     "docker:build": "docker build ."
   },
   "eslintConfig": {
@@ -45,14 +53,16 @@
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",
     "@testing-library/user-event": "13.2.0",
-    "@types/jest": "26.0.16",
-    "@types/lodash": "4.14.178",
-    "@types/node": "12.20.16",
+    "@types/pluralize": "^0.0.29",
     "@types/react": "16.14.11",
     "@types/react-dom": "17.0.0",
-    "prettier": "^2.8.3",
+    "cosmiconfig-typescript-loader": "^4.3.0",
+    "graphql-ast-types-browser": "^1.0.2",
+    "jsonexport": "^3.2.0",
+    "react-app-alias": "^2.2.2",
+    "run-bin": "^1.0.1",
     "tailwindcss": "^3.2.4",
     "type-fest": "0.13.1",
-    "typescript": "4.2.4"
+    "typescript": "4.9.4"
   }
 }
